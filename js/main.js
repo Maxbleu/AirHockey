@@ -29,7 +29,7 @@ window.onload = function() {
 
 	let posicionAnimacionComecocos = 0;
 
-	let hockeyElements = new Array(3);
+	let hockeyElements;
 
 	let puckComeCocos;
 	let stickIA;
@@ -71,7 +71,7 @@ window.onload = function() {
 			
 			//	Comprobamos cual de los elementos en la lista es el puck
 			let assetsCoords;
-			if(hockeyElements[iterador].constructor.name === "PuckComeCocos"){
+			if(hockeyElements[iterador].constructor.name === PuckComeCocos.name){
 
 				//	Obtenemos las coordenadas de la animación en el sprite
 				assetsCoords = hockeyElements[iterador].animacionesComecocosCoords[posicionAnimacionComecocos];
@@ -178,6 +178,8 @@ window.onload = function() {
 		PuckComeCocos.prototype.asset = SPRITECOMECOCOS;
 
 		//	Creamos los elementos del canvas
+
+		hockeyElements = [];
 
 		//	Elemento puck
 		puckComeCocos = new PuckComeCocos(176,290);
