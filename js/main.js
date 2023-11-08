@@ -14,8 +14,8 @@ window.onload = function() {
 		ARRIBA : 38,
 		DERECHA : 39,
 		ABAJO : 40
-	};
-
+	}; 
+	
 	let arriba = false;
 	let abajo = false;
 	let izquierda = false;
@@ -206,10 +206,6 @@ window.onload = function() {
 
 
 
-
-
-
-
 	
 	//	MAIN
 
@@ -222,5 +218,7 @@ window.onload = function() {
 	//	Configuramos la aplicación
 
 	cargarConfiguración();
+
+	//	Lanzamos el juego
 	startGame();
 }
