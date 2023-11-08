@@ -5,9 +5,9 @@ window.onload = function() {
 	const LIMITEARRIBA = 298;
 	const LIMITEABAJO = 515;
 
-	const LIMITEPORTERIAPARTEIZQUIERDA = 123;
-	const LIMITEPORTERIAPARTEDERECHA = 257;
-	const LIMITEPORTERIAABAJO = 585;
+	//const LIMITEPORTERIAPARTEIZQUIERDA = 123;
+	//const LIMITEPORTERIAPARTEDERECHA = 257;
+	//const LIMITEPORTERIAABAJO = 585;
 
 	const MOVIMIENTOS = {
 		IZQUIERDA : 37,
@@ -29,36 +29,11 @@ window.onload = function() {
 
 	let posicionAnimacionComecocos = 0;
 
-	let hockeyElements = [];
+	let hockeyElements = new Array(3);
 
 	let puckComeCocos;
 	let stickIA;
 	let stickUser;
-
-
-	function PuckComeCocos(x_,y_){
-
-		this.x = x_;
-		this.y = y_;
-
-		this.animacionesComecocosCoords = [[0,1],[32,1]];
-		this.anchura = 29;
-		this.altura = 29;
-
-	}
-
-
-	function StickHockey(x_, y_){
-
-		this.x = x_;
-		this.y = y_;
-
-		this.skinCoords = [524,111];
-		this.anchura = 72;
-		this.altura = 71;
-		this.velocidad = 5;
-
-	}
 
 
 	/**
@@ -189,7 +164,7 @@ window.onload = function() {
 	 * Este método se encarga de configurar los elementos de 
 	 * la aplicación necesarios para que comienze el juego
 	 */
-	function init(){
+	function cargarConfiguración(){
 		// Localizamos el canvas
 		canvas = document.getElementById("miCanvas");
 		
@@ -197,14 +172,10 @@ window.onload = function() {
 		ctx = canvas.getContext("2d");
 
 		//	Cargamos el asset del stick de hockey
-		let assetsHockey = new Image();
-		assetsHockey.src="assets/assetsHockey.png";
-		StickHockey.prototype.asset = assetsHockey;
+		StickHockey.prototype.asset = ASSETSHOCKEY;
 
 		//	Cargamos el sprite de comecocos
-		let spriteComecocos = new Image();
-		spriteComecocos.src="sprite/spriteComecocos.png";
-		PuckComeCocos.prototype.asset = spriteComecocos;
+		PuckComeCocos.prototype.asset = SPRITECOMECOCOS;
 
 		//	Creamos los elementos del canvas
 
@@ -217,9 +188,6 @@ window.onload = function() {
 		stickIA = new StickHockey(155,40);
 
 		hockeyElements.push(puckComeCocos,stickUser,stickIA);
-
-		//	Iniciamos el juego
-		startGame();
 	}
 
 
@@ -251,5 +219,6 @@ window.onload = function() {
 	
 	//	Configuramos la aplicación
 
-	init();
+	cargarConfiguración();
+	startGame();
 }
