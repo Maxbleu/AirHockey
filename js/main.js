@@ -2,8 +2,10 @@ window.onload = function() {
 
 	const LIMITELADOIZQUIERDO = 13;
 	const LIMITELADODERECHO = 295;
-	const LIMITEARRIBA = 298;
+	const LIMITEMEDIOCAMPO = 298;
 	const LIMITEABAJO = 515;
+
+	const LIMITEARRIBA = 13;
 
 	//const LIMITEPORTERIAPARTEIZQUIERDA = 123;
 	//const LIMITEPORTERIAPARTEDERECHA = 257;
@@ -35,25 +37,24 @@ window.onload = function() {
 	let stickIA;
 	let stickUser;
 
-
 	/**
-	 * Este método se encarga de comprobar si el usuario 
+	 * Esta función se encarga de detectar si hay una 
+	 * colisión entre unos de los sticks y el disco 
+	 * @param {Object} stick 
+	 * @returns {boolean}
 	 */
-	function realizarMovimientoDelUsuario(){
-		if(izquierda && stickUser.x > LIMITELADOIZQUIERDO){
-			stickUser.x -= stickUser.velocidad;
-		}
-		if(arriba && stickUser.y > LIMITEARRIBA){
-			stickUser.y -= stickUser.velocidad;
-		}
-		if(derecha && stickUser.x < LIMITELADODERECHO){
-			stickUser.x += stickUser.velocidad;
-		}
-		if(abajo && stickUser.y < LIMITEABAJO){
-			stickUser.y += stickUser.velocidad;
+	function detectarColisionEntrePuckStick(stick){
+		let resultadoDistanciaPuckyStickEnX = Math.pow((stick.x - puckComeCocos.x),2);
+		let resultadoDistanciaPuckyStickEnY = Math.pow((stick.y - puckComeCocos.y),2);
+
+		let distanciaEntreElementos = Math.sqrt(resultadoDistanciaPuckyStickEnX + resultadoDistanciaPuckyStickEnY);
+		let sumaRadiosPuckyStick = stick.radio() + puckComeCocos.radio();
+		if (distanciaEntreElementos<sumaRadiosPuckyStick) {
+			return true;
+		} else {
+			return false;
 		}
 	}
-
 
 	function generarAnimacionHockey() {
 		
@@ -64,17 +65,48 @@ window.onload = function() {
 		ctx.drawImage(StickHockey.prototype.asset,0,0,380,598,0,0,380,598);
 
 		//	realizar movimiento del usuario
-		realizarMovimientoDelUsuario();
+		if(izquierda && stickUser.x > LIMITELADOIZQUIERDO){
+			stickUser.x -= stickUser.velocidad;
+		}
+		if(arriba && stickUser.y > LIMITEMEDIOCAMPO){
+			stickUser.y -= stickUser.velocidad;
+		}
+		if(derecha && stickUser.x < LIMITELADODERECHO){
+			stickUser.x += stickUser.velocidad;
+		}
+		if(abajo && stickUser.y < LIMITEABAJO){
+			stickUser.y += stickUser.velocidad;
+		}
+
+		//	Comprobamos si ha el disco está entre los límites del canvas
+		if(puckComeCocos.x < LIMITELADOIZQUIERDO){
+			puckComeCocos.x += puckComeCocos.velocidad;
+		}
+		if(puckComeCocos.y < LIMITEARRIBA){
+			puckComeCocos.y += puckComeCocos.velocidad;
+		}
+		if(puckComeCocos.x > LIMITELADODERECHO){
+			puckComeCocos.x -= puckComeCocos.velocidad;
+		}
+		if(puckComeCocos.y > LIMITEABAJO){
+			puckComeCocos.y -= puckComeCocos.velocidad;
+		}
+		
+		//	Comprobamos si el puck ha colisionado con uno de los sticks
+		if(detectarColisionEntrePuckStick(stickUser)){
+			console.log("El stick del usuario ha colisionado");
+		}
+		
 
 		//	Cargamos los elementos del canvas
 		for(let iterador = 0; iterador<hockeyElements.length; iterador++){
-			
 			//	Comprobamos cual de los elementos en la lista es el puck
 			let assetsCoords;
 			if(hockeyElements[iterador].constructor.name === PuckComeCocos.name){
 
 				//	Obtenemos las coordenadas de la animación en el sprite
 				assetsCoords = hockeyElements[iterador].animacionesComecocosCoords[posicionAnimacionComecocos];
+
 			}else{
 
 				//	Obtenemos las coordernadas del stick de hockey en el asset
@@ -216,7 +248,6 @@ window.onload = function() {
 	document.addEventListener("keyup", desactivarTeclaPulsada, false);
 	
 	//	Configuramos la aplicación
-
 	cargarConfiguración();
 
 	//	Lanzamos el juego
