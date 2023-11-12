@@ -25,6 +25,7 @@ window.onload = function() {
 
 	let idAnimacionHockey;
 	let idAnimacionAbrirCerrarBoca;
+	let idDesplazarPuck;
 
 	let ctx;
 	let canvas;
@@ -51,9 +52,12 @@ window.onload = function() {
 		let sumaRadiosPuckyStick = stick.radio() + puckComeCocos.radio();
 		if (distanciaEntreElementos<sumaRadiosPuckyStick) {
 			return true;
-		} else {
-			return false;
-		}
+		} 
+		return false;
+	}
+
+	function desplazarPuck(){
+		puckComeCocos.y -= puckComeCocos.velocidad;
 	}
 
 	function generarAnimacionHockey() {
@@ -77,6 +81,13 @@ window.onload = function() {
 		if(abajo && stickUser.y < LIMITEABAJO){
 			stickUser.y += stickUser.velocidad;
 		}
+		
+		//	Comprobamos si el puck ha colisionado con uno de los sticks
+		if(detectarColisionEntrePuckStick(stickUser)){
+
+			//	Lanzamos un setTimeout durante 3 segundos modificaremos la posición
+		
+		}
 
 		//	Comprobamos si ha el disco está entre los límites del canvas
 		if(puckComeCocos.x < LIMITELADOIZQUIERDO){
@@ -90,11 +101,6 @@ window.onload = function() {
 		}
 		if(puckComeCocos.y > LIMITEABAJO){
 			puckComeCocos.y -= puckComeCocos.velocidad;
-		}
-		
-		//	Comprobamos si el puck ha colisionado con uno de los sticks
-		if(detectarColisionEntrePuckStick(stickUser)){
-			console.log("El stick del usuario ha colisionado");
 		}
 		
 
