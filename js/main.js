@@ -51,14 +51,18 @@ window.onload = function() {
 		let distanciaEntreElementos = Math.sqrt(resultadoDistanciaPuckyStickEnX + resultadoDistanciaPuckyStickEnY);
 		let sumaRadiosPuckyStick = stick.radio() + puckComeCocos.radio();
 		if (distanciaEntreElementos<sumaRadiosPuckyStick) {
-			return true;
-		} 
-		return false;
+			
+			let dx = puckComeCocos.x - (stick.x + stick.anchura / 2);
+			let dy = puckComeCocos.y - (stick.y + stick.altura / 2);
+			let distancia = Math.sqrt(dx * dx + dy * dy);
+			let puntoImpactoX = puckComeCocos.x - (dx / distancia) * puckComeCocos.radio();
+			let puntoImpactoY = puckComeCocos.y - (dy / distancia) * puckComeCocos.radio();
+
+			puckComeCocos.difY = puckComeCocos.y - puntoImpactoY;
+			puckComeCocos.difX = puckComeCocos.x - puntoImpactoX;
+		}
 	}
 
-	function desplazarPuck(){
-		puckComeCocos.y -= puckComeCocos.velocidad;
-	}
 
 	function generarAnimacionHockey() {
 		
@@ -81,27 +85,26 @@ window.onload = function() {
 		if(abajo && stickUser.y < LIMITEABAJO){
 			stickUser.y += stickUser.velocidad;
 		}
-		
-		//	Comprobamos si el puck ha colisionado con uno de los sticks
-		if(detectarColisionEntrePuckStick(stickUser)){
 
-			//	Lanzamos un setTimeout durante 3 segundos modificaremos la posición
-		
+		//	Mover el puck
+		if(puckComeCocos.x > LIMITELADOIZQUIERDO){
+			puckComeCocos.x += puckComeCocos.difX;
 		}
+		if(puckComeCocos.y > LIMITEARRIBA){
+			puckComeCocos.y += puckComeCocos.difY;
+		}
+		if(puckComeCocos.x < LIMITELADODERECHO){
+			puckComeCocos.x -= puckComeCocos.difX;
+		}
+		if(puckComeCocos.y < LIMITEABAJO){
+			puckComeCocos.y -= puckComeCocos.difY;
+		}
+		
+		//	Comprobamos si el puck ha colisionado con el stick user
+
+		//	Comprobamos si el puck ha colisionado con el stick IA
 
 		//	Comprobamos si ha el disco está entre los límites del canvas
-		if(puckComeCocos.x < LIMITELADOIZQUIERDO){
-			puckComeCocos.x += puckComeCocos.velocidad;
-		}
-		if(puckComeCocos.y < LIMITEARRIBA){
-			puckComeCocos.y += puckComeCocos.velocidad;
-		}
-		if(puckComeCocos.x > LIMITELADODERECHO){
-			puckComeCocos.x -= puckComeCocos.velocidad;
-		}
-		if(puckComeCocos.y > LIMITEABAJO){
-			puckComeCocos.y -= puckComeCocos.velocidad;
-		}
 		
 
 		//	Cargamos los elementos del canvas

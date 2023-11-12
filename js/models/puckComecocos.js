@@ -4,11 +4,14 @@ function PuckComeCocos(x_,y_){
     this.anchura = 29;
     this.altura = 29;
     this.velocidad = 5;
+    this.direccion = 0;
 
     this.x = x_;
     this.y = y_;
     this.dx = this.anchura / 2;
     this.dy = this.altura / 2;
+    this.difX = 0;
+    this.difY = 0;
 
     this.radio = function(){
         let dxElevadoADos = Math.floor(Math.pow(this.dx,2));
