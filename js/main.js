@@ -1,7 +1,7 @@
 window.onload = function() {
 
 	const LIMITELADOIZQUIERDO = 13;
-	const LIMITELADODERECHO = 295;
+	const LIMITELADODERECHO = 350;
 	const LIMITEMEDIOCAMPO = 298;
 	const LIMITEABAJO = 515;
 
@@ -33,6 +33,7 @@ window.onload = function() {
 	let posicionAnimacionComecocos = 0;
 
 	let hockeyElements;
+	let sticks;
 
 	let puckComeCocos;
 	let stickIA;
@@ -45,22 +46,16 @@ window.onload = function() {
 	 * @returns {boolean}
 	 */
 	function detectarColisionEntrePuckStick(stick){
-		let resultadoDistanciaPuckyStickEnX = Math.pow((stick.x - puckComeCocos.x),2);
-		let resultadoDistanciaPuckyStickEnY = Math.pow((stick.y - puckComeCocos.y),2);
+		let distanciaX = Math.pow((stick.x - puckComeCocos.x),2);
+		let distanciaY = Math.pow((stick.y - puckComeCocos.y),2);
 
-		let distanciaEntreElementos = Math.sqrt(resultadoDistanciaPuckyStickEnX + resultadoDistanciaPuckyStickEnY);
+		let distanciaEntreElementos = Math.sqrt(distanciaX + distanciaY);
 		let sumaRadiosPuckyStick = stick.radio() + puckComeCocos.radio();
-		if (distanciaEntreElementos<sumaRadiosPuckyStick) {
-			
-			let dx = puckComeCocos.x - (stick.x + stick.anchura / 2);
-			let dy = puckComeCocos.y - (stick.y + stick.altura / 2);
-			let distancia = Math.sqrt(dx * dx + dy * dy);
-			let puntoImpactoX = puckComeCocos.x - (dx / distancia) * puckComeCocos.radio();
-			let puntoImpactoY = puckComeCocos.y - (dy / distancia) * puckComeCocos.radio();
 
-			puckComeCocos.difY = puckComeCocos.y - puntoImpactoY;
-			puckComeCocos.difX = puckComeCocos.x - puntoImpactoX;
+		if (distanciaEntreElementos<sumaRadiosPuckyStick) {
+			return true;
 		}
+		return false;
 	}
 
 
@@ -79,29 +74,30 @@ window.onload = function() {
 		if(arriba && stickUser.y > LIMITEMEDIOCAMPO){
 			stickUser.y -= stickUser.velocidad;
 		}
-		if(derecha && stickUser.x < LIMITELADODERECHO){
+		if(derecha && stickUser.x - LIMITELADODERECHO < stickUser.radio()){
 			stickUser.x += stickUser.velocidad;
 		}
 		if(abajo && stickUser.y < LIMITEABAJO){
 			stickUser.y += stickUser.velocidad;
 		}
 
-		//	Mover el puck
-		if(puckComeCocos.x > LIMITELADOIZQUIERDO){
-			puckComeCocos.x += puckComeCocos.difX;
+		//	Comprobamos si el puck ha colisionado con el stick user
+		if(detectarColisionEntrePuckStick(stickUser)){
+			puckComeCocos.direccion = Math.atan2(puckComeCocos.y - stickUser.y, puckComeCocos.x - stickUser.x);
 		}
-		if(puckComeCocos.y > LIMITEARRIBA){
-			puckComeCocos.y += puckComeCocos.difY;
+
+		// Mover el puck
+		puckComeCocos.x += puckComeCocos.velocidad * Math.cos(puckComeCocos.direccion);
+		puckComeCocos.y += puckComeCocos.velocidad * Math.sin(puckComeCocos.direccion);
+		
+		// Comprobamos si ha el disco está entre los límites del canvas
+		if (puckComeCocos.x < LIMITELADOIZQUIERDO || puckComeCocos.x > LIMITELADODERECHO) {
+			puckComeCocos.direccion = Math.PI - puckComeCocos.direccion;
 		}
-		if(puckComeCocos.x < LIMITELADODERECHO){
-			puckComeCocos.x -= puckComeCocos.difX;
-		}
-		if(puckComeCocos.y < LIMITEABAJO){
-			puckComeCocos.y -= puckComeCocos.difY;
+		if (puckComeCocos.y < LIMITEARRIBA || puckComeCocos.y > LIMITEABAJO) {
+			puckComeCocos.direccion = -puckComeCocos.direccion;
 		}
 		
-		//	Comprobamos si el puck ha colisionado con el stick user
-
 		//	Comprobamos si el puck ha colisionado con el stick IA
 
 		//	Comprobamos si ha el disco está entre los límites del canvas
@@ -222,6 +218,8 @@ window.onload = function() {
 
 		hockeyElements = [];
 
+		sticks = [];
+
 		//	Elemento puck
 		puckComeCocos = new PuckComeCocos(176,290);
 
@@ -231,6 +229,7 @@ window.onload = function() {
 		stickIA = new StickHockey(155,40);
 
 		hockeyElements.push(puckComeCocos,stickUser,stickIA);
+		sticks.push(stickIA,stickUser);
 	}
 
 
@@ -261,4 +260,6 @@ window.onload = function() {
 
 	//	Lanzamos el juego
 	startGame();
+
+	canvas.focus();
 }
