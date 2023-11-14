@@ -2,8 +2,8 @@
 
 //  Este fichero se encarga de cargar las rutas de los assets de la aplicación
 
-const SPRITECOMECOCOSFILEPATH = "sprite/spriteComecocos.png";
-const ASSETSHOCKEYFILEPATH = "assets/assetsHockey.png";
+const HOCKEYASSETSFILEPATH = "assets/sprite/hockey_assets.png";
+const BACKGROUNDFILEPATH = "assets/background.png";
 
 /**
  * Esta función se encarga de obtener un asset 
@@ -17,5 +17,5 @@ function getAsset(filePath){
     return asset;
 }
 
-const SPRITECOMECOCOS = getAsset(SPRITECOMECOCOSFILEPATH);
-const ASSETSHOCKEY = getAsset(ASSETSHOCKEYFILEPATH);
+const HOCKEYASSETS = getAsset(HOCKEYASSETSFILEPATH);
+const BACKGROUND = getAsset(BACKGROUNDFILEPATH);

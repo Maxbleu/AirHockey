@@ -15,11 +15,21 @@ function HockeyElement(_x, _y, _altura, _anchura){
     this.altura = _altura;
     this.anchura = _anchura;
 
-    this.radio = Math.round(Math.sqrt(Math.pow(this.anchura / 2, 2) + Math.pow(this.altura / 2, 2)));
+    this.dx = this.anchura / 2;
+    this.dy = this.altura / 2;
 
-    this.rx = this.x + this.anchura / 2;
-    this.ry = this.y + this.altura / 2;
+    this.radio = function(){
+        let dxElevadoADos = Math.pow(this.dx,2);
+        let dyElevadoADos = Math.pow(this.dy,2);
+        let resultadoRaizCuadrada = Math.sqrt(dxElevadoADos+dyElevadoADos);
+        return resultadoRaizCuadrada / 2;
+    }
 
-    this.velocidad = 5;
+    this.rx = this.dx + this.x;
+    this.ry = this.dy + this.y;
+
+    this.velocidad = 3;
+
+    this.asset = HOCKEYASSETS;
 
 }

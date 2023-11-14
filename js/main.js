@@ -7,7 +7,6 @@ window.onload = function() {
 
 	let idAnimacionHockey;
 	let idAnimacionAbrirCerrarBoca;
-	let idDesplazarPuck;
 
 	let ctx;
 	let canvas;
@@ -30,16 +29,16 @@ window.onload = function() {
 	function PuckComeCocos(_x, _y){
 
 		this.base = HockeyElement;
-		this.base(_x, _y, 29, 29);
+		this.base(_x, _y, 30, 30);
 
 		this.direccion = 0;
 		this.posicionAnimacionComecocos = 0;
 
-		this.animacionesComecocosCoords = [[0,1],[32,1]];
+		this.animacionesComecocosCoords = [[203,243],[235,243]];
 
 
 		this.abrirCierraBoca = function(){
-			posicionAnimacionComecocos = (posicionAnimacionComecocos + 1) % this.animacionesComecocosCoords.length;
+			this.posicionAnimacionComecocos = (this.posicionAnimacionComecocos + 1) % 2;
 		}
 
 
@@ -73,13 +72,14 @@ window.onload = function() {
 
 
 		this.detectarColisionEntrePuckStick = function(stick){
-			let distanciaX = Math.pow((stick.rx - puckComeCocos.rx),2);
-			let distanciaY = Math.pow((stick.ry - puckComeCocos.ry),2);
+			let distanciaEnX = Math.pow((stick.rx - this.rx), 2);
+			let distanciaEnY = Math.pow((stick.ry - this.ry), 2);
+			let distancia = Math.sqrt(distanciaEnX + distanciaEnY);
 	
-			let distanciaEntreElementos = Math.sqrt(distanciaX + distanciaY);
-			let sumaRadiosPuckyStick = (stick.radio+11) + puckComeCocos.radio;
+			let radioStick = stick.radio() + 50;
+			let sumaRadiosPuckyStick = radioStick + this.radio();
 	
-			if (distanciaEntreElementos<sumaRadiosPuckyStick) {
+			if (distancia<sumaRadiosPuckyStick) {
 				return true;
 			}
 			return false;
@@ -121,7 +121,7 @@ window.onload = function() {
 		this.base = HockeyElement;
 		this.base(_x, _y, 71, 71);
 
-		this.skinCoords = [525,112];
+		this.skinCoords = [100,111];
 
 		this.yArriba = function(){
 			return this.y;
@@ -132,11 +132,11 @@ window.onload = function() {
 		}
 
 		this.xDerecha = function(){
-			return this.x + 55;
+			return this.x + this.anchura;
 		}
 
 		this.yBajo = function(){
-			return this.y + 45;
+			return this.y + this.altura;
 		}
 
 		this.show = function(){
@@ -159,13 +159,13 @@ window.onload = function() {
 				this.x = LIMITELADOIZQUIERDO;
 			}
 			if(this.yArriba() < LIMITEMEDIOCAMPO){
-				this.y = LIMITEMEDIOCAMPO
+				this.y = LIMITEMEDIOCAMPO;
 			}
 			if(this.xDerecha() > LIMITELADODERECHO){
-				this.x = LIMITELADODERECHO
+				this.x = 295;
 			}
 			if(this.yBajo() > LIMITEABAJO){
-				this.y = LIMITEABAJO
+				this.y = 516;
 			}
 		}
 	}
@@ -179,10 +179,13 @@ window.onload = function() {
 		ctx.clearRect(0, 0, canvas.width, canvas.height);
 
 		//	cargamos el fondo
-		ctx.drawImage(StickHockey.prototype.asset,0,0,380,598,0,0,380,598);
+		ctx.drawImage(BACKGROUND,0,0,380,599,0,0,380,599);
 
-		puckComeCocos.mover();
-		puckComeCocos.mantenerPuckEnElCanvas();
+		stickLocal.mover();
+		stickLocal.mantenerStickEnElCanvas();
+
+		stickVisitante.mover();
+		//stickVisitante.mantenerPuckEnElCanvas();
 
 		//	Comprobamos si el puck ha colisionado con el stick user
 		if(puckComeCocos.detectarColisionEntrePuckStick(stickLocal)){
@@ -194,14 +197,11 @@ window.onload = function() {
 			puckComeCocos.modificarDireccionDelPuck(stickVisitante);
 		}
 
+		puckComeCocos.mover();
+		puckComeCocos.mantenerPuckEnElCanvas();
+
 		puckComeCocos.show();
-
-		stickLocal.mover();
-		stickLocal.mantenerStickEnElCanvas();
 		stickLocal.show();
-
-		stickVisitante.mover();
-		stickVisitante.mantenerPuckEnElCanvas();
 		stickVisitante.show();
 
 		//	Comprobamos si el disco ha entrado en la portería local
@@ -219,30 +219,15 @@ window.onload = function() {
 
 		ctx = canvas.getContext("2d");
 
-		//	Cargamos el asset del stick de hockey
-		StickHockey.prototype.asset = ASSETSHOCKEY;
-
-		//	Cargamos el sprite de comecocos
-		PuckComeCocos.prototype.asset = SPRITECOMECOCOS;
-
 		//	Creamos los elementos del canvas
 		puckComeCocos = new PuckComeCocos(176,290);
 
 		stickLocal = new StickHockey(155,500);
 		stickLocal.mover = function(){
-			//	TODO: cuando haya pulsada dos teclas por el usuario que la velocidad esa un punto menor la velocidad actual
-			if(izquierda){
-				this.x -= this.velocidad;
-			}
-			if(arriba){
-				this.y -= this.velocidad;
-			}
-			if(derecha){
-				this.x += this.velocidad;
-			}
-			if(abajo){
-				this.y += this.velocidad;
-			}
+			if(izquierda){this.x -= this.velocidad;}
+			if(arriba){this.y -= this.velocidad;}
+			if(derecha){this.x += this.velocidad;}
+			if(abajo){this.y += this.velocidad;}
 		}
 
 		stickVisitante = new StickHockey(155,40);
@@ -262,7 +247,9 @@ window.onload = function() {
 		idAnimacionHockey = setInterval(gameLoop, 1000/50);
 		
 		//	Animación encargada de abrir y cerra la boca
-		idAnimacionAbrirCerrarBoca = setInterval(puckComeCocos.abrirCierraBoca, 1000/8);
+		idAnimacionAbrirCerrarBoca = setInterval(function(){
+			puckComeCocos.abrirCierraBoca()
+		}, 1000/8);
 	}
 
 
