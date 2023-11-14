@@ -44,19 +44,19 @@ window.onload = function() {
 
 		this.mantenerPuckEnElCanvas = function(){
 			if(this.direccion != 0){
-				if (this.rx > LIMITELADODERECHO) {
+				if (this.rx() > LIMITELADODERECHO) {
 					this.direccion = Math.PI - this.direccion;
 				}
 		
-				if (this.y < LIMITEARRIBA) {
+				if (this.y <= LIMITEARRIBA) {
 					this.direccion = -this.direccion;
 				}
 		
-				if(this.x < LIMITELADOIZQUIERDO){
+				if(this.x <= LIMITELADOIZQUIERDO){
 					this.direccion = Math.PI - this.direccion;
 				}
 		
-				if(this.ry > LIMITEABAJO){
+				if(this.ry() > LIMITEABAJO){
 					this.direccion = -this.direccion;
 				}
 			}
@@ -72,14 +72,13 @@ window.onload = function() {
 
 
 		this.detectarColisionEntrePuckStick = function(stick){
-			let distanciaEnX = Math.pow((stick.rx - this.rx), 2);
-			let distanciaEnY = Math.pow((stick.ry - this.ry), 2);
-			let distancia = Math.sqrt(distanciaEnX + distanciaEnY);
-	
-			let radioStick = stick.radio() + 50;
-			let sumaRadiosPuckyStick = radioStick + this.radio();
-	
-			if (distancia<sumaRadiosPuckyStick) {
+			let distanciaX = Math.floor(Math.pow((stick.rx() - this.rx()),2));
+			let distanciaY = Math.floor(Math.pow((stick.ry() - this.ry()),2));
+
+			let distanciaEntreElementos = Math.sqrt(distanciaX + distanciaY);
+			let sumaRadiosPuckyStick = stick.radio() + puckComeCocos.radio();
+
+			if (distanciaEntreElementos<sumaRadiosPuckyStick) {
 				return true;
 			}
 			return false;
@@ -103,7 +102,7 @@ window.onload = function() {
 
 
 		this.modificarDireccionDelPuck = function(stick){
-			this.direccion = Math.atan2(this.ry - stick.ry, this.rx - stick.rx);
+			this.direccion = Math.atan2(this.ry() - stick.ry(), this.rx() - stick.rx());
 		}
 
 
@@ -197,8 +196,8 @@ window.onload = function() {
 			puckComeCocos.modificarDireccionDelPuck(stickVisitante);
 		}
 
-		puckComeCocos.mover();
 		puckComeCocos.mantenerPuckEnElCanvas();
+		puckComeCocos.mover();
 
 		puckComeCocos.show();
 		stickLocal.show();
