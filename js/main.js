@@ -183,6 +183,18 @@ window.onload = function() {
 		
 	}
 	/**
+	 * Este método se encarga de iniciar el funcionamiento del juego
+	 */
+	function startGame(){
+		//	Lanzamos la animación
+		idAnimacionHockey = setInterval(gameLoop, 1000/50);
+		
+		//	Animación encargada de abrir y cerra la boca
+		idAnimacionAbrirCerrarBoca = setInterval(function(){
+			puckComeCocos.abrirCierraBoca()
+		}, 1000/8);
+	}
+	/**
 	 * Este método se encarga de configurar los elementos de 
 	 * la aplicación necesarios para que comienze el juego
 	 */
@@ -211,18 +223,6 @@ window.onload = function() {
 		porteriaLocal = new Porteria(LINEADEGOLPORTERIALOCAL);
 
 		porteriaVisitante = new Porteria(LINEADEGOLPORTERIAVISITANTE);
-	}
-	/**
-	 * Este método se encarga de iniciar el funcionamiento del juego
-	 */
-	function startGame(){
-		//	Lanzamos la animación
-		idAnimacionHockey = setInterval(gameLoop, 1000/50);
-		
-		//	Animación encargada de abrir y cerra la boca
-		idAnimacionAbrirCerrarBoca = setInterval(function(){
-			puckComeCocos.abrirCierraBoca()
-		}, 1000/8);
 	}
 
 
