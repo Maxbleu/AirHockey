@@ -22,6 +22,3 @@ const DIFICULTAD = {
     MEDIUM : 2,
     HARD : 3
 };
-
-const CANVAS = document.getElementById("miCanvas");
-const CTX = canvas.getContext("2d");

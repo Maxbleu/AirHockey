@@ -4,37 +4,21 @@
 /**
  * Este objeto se encarga de gestionar todas 
  * las acciones del objeto PuckComeCocos
- * @param {number} x_ 
- * @param {number} y_ 
+ * @param {number} _x 
+ * @param {number} _y
+ * @param {number} _anchura
+ * @param {number} _altura
  */
-function PuckComeCocos(x_,y_){
+function PuckComeCocos(_x, _y){
 
-    this.animacionesComecocosCoords = [[0,1],[32,1]];
-    this.anchura = 29;
-    this.altura = 29;
-    this.velocidad = 5;
-    
+    this.base = HockeyElement;
+    this.base(_x, _y, _altura, _anchura);
+
     this.direccion = 0;
     this.posicionAnimacionComecocos = 0;
 
-    this.x = x_;
-    this.y = y_;
-    this.dx = this.anchura / 2;
-    this.dy = this.altura / 2;
+    this.animacionesComecocosCoords = [[0,1],[32,1]];
 
-    this.radio = function(){
-        let dxElevadoADos = Math.floor(Math.pow(this.dx,2));
-        let dyElevadoADos = Math.floor(Math.pow(this.dy,2));
-        return Math.sqrt(dxElevadoADos+dyElevadoADos) / 2;
-    }
-
-    this.rx = function(){
-        return this.dx + this.x;
-    }
-
-    this.ry = function(){
-        return this.dy + this.y;
-    }
 
     this.abrirCierraBoca = function(){
 		posicionAnimacionComecocos = (posicionAnimacionComecocos + 1) % this.animacionesComecocosCoords.length;
@@ -42,26 +26,60 @@ function PuckComeCocos(x_,y_){
 
     this.mantenerPuckEnElCanvas = function(){
         
-        if (this.rx() > LIMITELADODERECHO) {
-            this.direccion = Math.PI - this.direccion;
-        }
-
-        if (this.y < LIMITEARRIBA) {
-            this.direccion = -this.direccion;
-        }
-
-        if(this.x < LIMITELADOIZQUIERDO){
-            this.direccion = Math.PI - this.direccion;
-        }
-
-        if(this.ry() > LIMITEABAJO){
-            this.direccion = -this.direccion;
+        if(this.direccion != 0){
+            if (this.rx() > LIMITELADODERECHO) {
+                this.direccion = Math.PI - this.direccion;
+            }
+    
+            if (this.y < LIMITEARRIBA) {
+                this.direccion = -this.direccion;
+            }
+    
+            if(this.x < LIMITELADOIZQUIERDO){
+                this.direccion = Math.PI - this.direccion;
+            }
+    
+            if(this.ry() > LIMITEABAJO){
+                this.direccion = -this.direccion;
+            }
         }
 
     }
 
     this.mover = function(){
-        this.x += this.velocidad * Math.cos(this.direccion);
-        this.y += this.velocidad * Math.sin(this.direccion);
+        if(this.direccion != 0){
+            this.x += this.velocidad * Math.cos(this.direccion);
+            this.y += this.velocidad * Math.sin(this.direccion);
+        }
+    }
+
+    this.show = function(){
+        ctx.drawImage
+			(
+				this.asset,
+				this.animacionesComecocosCoords[this.posicionAnimacionComecocos][0],
+				this.animacionesComecocosCoords[this.posicionAnimacionComecocos][1],
+				this.anchura,
+				this.altura,
+				this.x,
+				this.y,
+				this.anchura,
+				this.altura
+			);
+    }
+
+    this.estaColisionandoConUnStick = function(){
+        let distanciaX = Math.pow((stick.rx() - puckComeCocos.rx()),2);
+		let distanciaY = Math.pow((stick.ry() - puckComeCocos.ry()),2);
+
+		let distanciaEntreElementos = Math.sqrt(distanciaX + distanciaY);
+		let sumaRadiosPuckyStick = stick.radio() + puckComeCocos.radio();
+
+		if (distanciaEntreElementos<sumaRadiosPuckyStick) {
+			return true;
+		}
+		return false;
     }
 }
+
+PuckComeCocos.prototype = new HockeyElement;
