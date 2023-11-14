@@ -26,6 +26,14 @@ function HockeyElement(_x, _y, _altura, _anchura){
         return (resultadoRaizCuadrada / 2) + 6;
     }
 
+    this.coordDerecha = function(){
+        return this.x + this.anchura;
+    }
+
+    this.coordAbajo = function(){
+        return this.y + this.altura;
+    }
+
     this.rx = function(){
         let rx = this.dx() + this.x;
         return rx;

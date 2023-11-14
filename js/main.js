@@ -41,27 +41,22 @@ window.onload = function() {
 			this.posicionAnimacionComecocos = (this.posicionAnimacionComecocos + 1) % 2;
 		}
 
-
 		this.mantenerPuckEnElCanvas = function(){
 			if(this.direccion != 0){
-				if (this.rx() > LIMITELADODERECHO) {
-					this.direccion = Math.PI - this.direccion;
-				}
-		
-				if (this.y <= LIMITEARRIBA) {
+				if(this.y < LIMITEARRIBA) {
 					this.direccion = -this.direccion;
 				}
-		
-				if(this.x <= LIMITELADOIZQUIERDO){
+				if(this.x < LIMITELADOIZQUIERDO){
 					this.direccion = Math.PI - this.direccion;
 				}
-		
-				if(this.ry() > LIMITEABAJO){
+				if(this.coordDerecha() > LIMITELADODERECHO) {
+					this.direccion = Math.PI - this.direccion;
+				}
+				if(this.coordAbajo() > LIMITEABAJO){
 					this.direccion = -this.direccion;
 				}
 			}
 		}
-
 
 		this.mover = function(){
 			if(this.direccion != 0){
@@ -69,7 +64,6 @@ window.onload = function() {
 				this.y += this.velocidad * Math.sin(this.direccion);
 			}
 		}
-
 
 		this.detectarColisionEntrePuckStick = function(stick){
 			let distanciaX = Math.floor(Math.pow((stick.rx() - this.rx()),2));
@@ -83,7 +77,6 @@ window.onload = function() {
 			}
 			return false;
 		}
-
 
 		this.show = function(){
 			ctx.drawImage
@@ -100,11 +93,9 @@ window.onload = function() {
 				);
 		}
 
-
 		this.modificarDireccionDelPuck = function(stick){
 			this.direccion = Math.atan2(this.ry() - stick.ry(), this.rx() - stick.rx());
 		}
-
 
 	}
 	PuckComeCocos.prototype = new HockeyElement;
@@ -122,22 +113,6 @@ window.onload = function() {
 
 		this.skinCoords = [100,111];
 
-		this.yArriba = function(){
-			return this.y;
-		}
-
-		this.xIzquierda = function(){
-			return this.x;
-		}
-
-		this.xDerecha = function(){
-			return this.x + this.anchura;
-		}
-
-		this.yBajo = function(){
-			return this.y + this.altura;
-		}
-
 		this.show = function(){
 			ctx.drawImage
 				(
@@ -154,22 +129,21 @@ window.onload = function() {
 		}
 
 		this.mantenerStickEnElCanvas = function(){
-			if(this.xIzquierda() < LIMITELADOIZQUIERDO){
+			if(this.x < LIMITELADOIZQUIERDO){
 				this.x = LIMITELADOIZQUIERDO;
 			}
-			if(this.yArriba() < LIMITEMEDIOCAMPO){
+			if(this.y < LIMITEMEDIOCAMPO){
 				this.y = LIMITEMEDIOCAMPO;
 			}
-			if(this.xDerecha() > LIMITELADODERECHO){
+			if(this.coordDerecha() > LIMITELADODERECHO){
 				this.x = 295;
 			}
-			if(this.yBajo() > LIMITEABAJO){
+			if(this.coordAbajo() > LIMITEABAJO){
 				this.y = 516;
 			}
 		}
 	}
 	StickHockey.prototype = new HockeyElement;
-
 
 
 	function gameLoop() {
