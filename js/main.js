@@ -1,22 +1,4 @@
 window.onload = function() {
-
-	const LIMITELADOIZQUIERDO = 13;
-	const LIMITELADODERECHO = 350;
-	const LIMITEMEDIOCAMPO = 298;
-	const LIMITEABAJO = 515;
-
-	const LIMITEARRIBA = 13;
-
-	//const LIMITEPORTERIAPARTEIZQUIERDA = 123;
-	//const LIMITEPORTERIAPARTEDERECHA = 257;
-	//const LIMITEPORTERIAABAJO = 585;
-
-	const MOVIMIENTOS = {
-		IZQUIERDA : 37,
-		ARRIBA : 38,
-		DERECHA : 39,
-		ABAJO : 40
-	}; 
 	
 	let arriba = false;
 	let abajo = false;
@@ -36,8 +18,11 @@ window.onload = function() {
 	let sticks;
 
 	let puckComeCocos;
-	let stickIA;
-	let stickUser;
+	let stickVisitante;
+	let stickLocal;
+	let porteriaLocal;
+	let porteriaVisitante;
+
 
 	/**
 	 * Esta función se encarga de detectar si hay una 
@@ -46,8 +31,8 @@ window.onload = function() {
 	 * @returns {boolean}
 	 */
 	function detectarColisionEntrePuckStick(stick){
-		let distanciaX = Math.pow((stick.x - puckComeCocos.x),2);
-		let distanciaY = Math.pow((stick.y - puckComeCocos.y),2);
+		let distanciaX = Math.pow((stick.rx() - puckComeCocos.rx()),2);
+		let distanciaY = Math.pow((stick.ry() - puckComeCocos.ry()),2);
 
 		let distanciaEntreElementos = Math.sqrt(distanciaX + distanciaY);
 		let sumaRadiosPuckyStick = stick.radio() + puckComeCocos.radio();
@@ -68,39 +53,53 @@ window.onload = function() {
 		ctx.drawImage(StickHockey.prototype.asset,0,0,380,598,0,0,380,598);
 
 		//	realizar movimiento del usuario
-		if(izquierda && stickUser.x > LIMITELADOIZQUIERDO){
-			stickUser.x -= stickUser.velocidad;
+		if(izquierda && stickLocal.xIzquierda() > LIMITELADOIZQUIERDO){
+			stickLocal.x -= stickLocal.velocidad;
 		}
-		if(arriba && stickUser.y > LIMITEMEDIOCAMPO){
-			stickUser.y -= stickUser.velocidad;
+		if(arriba && stickLocal.yArriba() > LIMITEMEDIOCAMPO){
+			stickLocal.y -= stickLocal.velocidad;
 		}
-		if(derecha && stickUser.x - LIMITELADODERECHO < stickUser.radio()){
-			stickUser.x += stickUser.velocidad;
+		if(derecha && stickLocal.xDerecha() < LIMITELADODERECHO){
+			stickLocal.x += stickLocal.velocidad;
 		}
-		if(abajo && stickUser.y < LIMITEABAJO){
-			stickUser.y += stickUser.velocidad;
+		if(abajo && stickLocal.yBajo() < LIMITEABAJO){
+			stickLocal.y += stickLocal.velocidad;
 		}
 
+		
 		//	Comprobamos si el puck ha colisionado con el stick user
-		if(detectarColisionEntrePuckStick(stickUser)){
-			puckComeCocos.direccion = Math.atan2(puckComeCocos.y - stickUser.y, puckComeCocos.x - stickUser.x);
+		if(detectarColisionEntrePuckStick(stickLocal)){
+			puckComeCocos.direccion = Math.atan2(puckComeCocos.ry() - stickLocal.ry(), puckComeCocos.rx() - stickLocal.rx());
 		}
 
-		// Mover el puck
-		puckComeCocos.x += puckComeCocos.velocidad * Math.cos(puckComeCocos.direccion);
-		puckComeCocos.y += puckComeCocos.velocidad * Math.sin(puckComeCocos.direccion);
-		
-		// Comprobamos si ha el disco está entre los límites del canvas
-		if (puckComeCocos.x < LIMITELADOIZQUIERDO || puckComeCocos.x > LIMITELADODERECHO) {
-			puckComeCocos.direccion = Math.PI - puckComeCocos.direccion;
-		}
-		if (puckComeCocos.y < LIMITEARRIBA || puckComeCocos.y > LIMITEABAJO) {
-			puckComeCocos.direccion = -puckComeCocos.direccion;
-		}
-		
 		//	Comprobamos si el puck ha colisionado con el stick IA
+		if(detectarColisionEntrePuckStick(stickVisitante)){
+			puckComeCocos.direccion = Math.atan2(puckComeCocos.ry() - stickVisitante.ry(), puckComeCocos.rx() - stickVisitante.rx());
+		}
 
-		//	Comprobamos si ha el disco está entre los límites del canvas
+		//	Mover el puck
+		if(puckComeCocos.direccion !== 0){
+			//	Comprobamos si ha el disco está entre los límites del canvas
+			if (puckComeCocos.rx() > LIMITELADODERECHO) {
+				puckComeCocos.direccion = Math.PI - puckComeCocos.direccion;
+			}
+
+			//	TODO: permitir que el puck pueda pasar entre las coordenadas x 123 - 257 e y 7
+			if (puckComeCocos.y < LIMITEARRIBA) {
+				puckComeCocos.direccion = -puckComeCocos.direccion;
+			}
+			if(puckComeCocos.x < LIMITELADOIZQUIERDO){
+				puckComeCocos.direccion = Math.PI - puckComeCocos.direccion;
+			}
+
+			//	TODO: permitir que el puck pueda pasar entre las coordenadas x 123 - 257 e y 590
+			if(puckComeCocos.ry() > LIMITEABAJO){
+				puckComeCocos.direccion = -puckComeCocos.direccion;
+			}
+
+			puckComeCocos.x += puckComeCocos.velocidad * Math.cos(puckComeCocos.direccion);
+			puckComeCocos.y += puckComeCocos.velocidad * Math.sin(puckComeCocos.direccion);
+		}
 		
 
 		//	Cargamos los elementos del canvas
@@ -130,8 +129,13 @@ window.onload = function() {
 				hockeyElements[iterador].y,
 				hockeyElements[iterador].anchura,
 				hockeyElements[iterador].altura
-			)
+			);
 		}
+
+		//	Comprobamos si el disco ha entrado en la portería local
+
+		//	Comprobamos si el disco ha entrado en la portería visitante
+		
 	}
 
 
@@ -141,6 +145,60 @@ window.onload = function() {
 	 */
 	function abrirCierraBoca(){
 		posicionAnimacionComecocos = (posicionAnimacionComecocos + 1) % 2;
+	}
+
+
+	/**
+	 * Este método se encarga de configurar los elementos de 
+	 * la aplicación necesarios para que comienze el juego
+	 */
+	function cargarConfiguración(){
+		// Localizamos el canvas
+		canvas = document.getElementById("miCanvas");
+		
+		// Generamos el contexto de trabajo
+		ctx = canvas.getContext("2d");
+
+		//	Cargamos el asset del stick de hockey
+		StickHockey.prototype.asset = ASSETSHOCKEY;
+
+		//	Cargamos el sprite de comecocos
+		PuckComeCocos.prototype.asset = SPRITECOMECOCOS;
+
+		//	Creamos los elementos del canvas
+
+		hockeyElements = [];
+
+		sticks = [];
+
+		//	Elemento puck
+		puckComeCocos = new PuckComeCocos(176,290);
+
+		//	Elementos sticks
+		stickLocal = new StickHockey(155,500);
+
+		stickVisitante = new StickHockey(155,40);
+
+		hockeyElements.push(puckComeCocos,stickLocal,stickVisitante);
+		sticks.push(stickVisitante,stickLocal);
+
+		//	Cargamos las porterias
+
+		porteriaLocal = new Porteria(LINEADEGOLPORTERIALOCAL);
+
+		porteriaVisitante = new Porteria(LINEADEGOLPORTERIAVISITANTE);
+	}
+
+
+	/**
+	 * Este método se encarga de iniciar el funcionamiento del juego
+	 */
+	function startGame(){
+		//	Lanzamos la animación
+		idAnimacionHockey = setInterval(generarAnimacionHockey, 1000/50);
+		
+		//	Animación encargada de abrir y cerra la boca
+		idAnimacionAbrirCerrarBoca = setInterval(abrirCierraBoca, 1000/8);
 	}
 
 
@@ -195,55 +253,6 @@ window.onload = function() {
 				break;
 		}
 	}
-
-
-	/**
-	 * Este método se encarga de configurar los elementos de 
-	 * la aplicación necesarios para que comienze el juego
-	 */
-	function cargarConfiguración(){
-		// Localizamos el canvas
-		canvas = document.getElementById("miCanvas");
-		
-		// Generamos el contexto de trabajo
-		ctx = canvas.getContext("2d");
-
-		//	Cargamos el asset del stick de hockey
-		StickHockey.prototype.asset = ASSETSHOCKEY;
-
-		//	Cargamos el sprite de comecocos
-		PuckComeCocos.prototype.asset = SPRITECOMECOCOS;
-
-		//	Creamos los elementos del canvas
-
-		hockeyElements = [];
-
-		sticks = [];
-
-		//	Elemento puck
-		puckComeCocos = new PuckComeCocos(176,290);
-
-		//	Elementos sticks
-		stickUser = new StickHockey(155,500);
-
-		stickIA = new StickHockey(155,40);
-
-		hockeyElements.push(puckComeCocos,stickUser,stickIA);
-		sticks.push(stickIA,stickUser);
-	}
-
-
-	/**
-	 * Este método se encarga de iniciar el funcionamiento del juego
-	 */
-	function startGame(){
-		//	Lanzamos la animación
-		idAnimacionHockey = setInterval(generarAnimacionHockey, 1000/50);
-		
-		//	Animación encargada de abrir y cerra la boca
-		idAnimacionAbrirCerrarBoca = setInterval(abrirCierraBoca, 1000/8);
-	}
-
 
 
 	
