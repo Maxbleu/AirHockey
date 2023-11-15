@@ -2,11 +2,14 @@
  * 		OBJETO PORTERIA
  * Este objeto se encarga de gestionar todas las 
  * acciones relacionadas con la porteria del juego
- * @param {number} lineaDeGol 
+ * @param {number} _lineaDeGol 
  */
-function Porteria(lineaDeGol_){
+function Porteria(_lineaDeGol){
 
-	this.lineaDeGol = lineaDeGol_;
+	this.lineaDeGol = _lineaDeGol;
+
+	this.inicioPorteria = 123;
+	this.finPorteria = 257;
 
 	/**
 	 * Esta función se encarga de comprobar 
@@ -15,7 +18,7 @@ function Porteria(lineaDeGol_){
 	 * @returns {boolean}
 	 */
 	this.comprobarSiPuckEstaEnPorteria = function(puck){
-		if(puck.x < this.lineaDeGol_){
+		if(puck.x < this._lineaDeGol){
 			if(puck.y > this.INICIOPORTERIA && puck.y < this.FINPORTERIA){
 				return true;
 			}
@@ -24,6 +27,3 @@ function Porteria(lineaDeGol_){
 	}
 
 }
-
-Porteria.prototype.INICIOPORTERIA = 123;
-Porteria.prototype.FINPORTERIA = 257;

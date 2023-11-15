@@ -10,13 +10,10 @@
  */
 function HockeyElement(_x, _y, _altura, _anchura){
 
-    this.x = _x;
-    this.y = _y;
-    this.altura = _altura;
-    this.anchura = _anchura;
+    this.base = ObjetoBase;
+    this.base(_x, _y, _altura, _anchura);
 
     this.velocidad = 3;
-
     this.asset = HOCKEYASSETS;
 
     this.radio = function(){
@@ -26,11 +23,11 @@ function HockeyElement(_x, _y, _altura, _anchura){
         return (resultadoRaizCuadrada / 2) + 6;
     }
 
-    this.coordDerecha = function(){
+    this.coordsLadoDerecho = function(){
         return this.x + this.anchura;
     }
 
-    this.coordAbajo = function(){
+    this.coordsParteAbajo = function(){
         return this.y + this.altura;
     }
 
@@ -53,3 +50,4 @@ function HockeyElement(_x, _y, _altura, _anchura){
     }
 
 }
+HockeyElement.prototype = ObjetoBase;
