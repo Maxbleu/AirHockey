@@ -19,3 +19,4 @@ function getAsset(filePath){
 
 const HOCKEYASSETS = getAsset(HOCKEYASSETSFILEPATH);
 const BACKGROUND = getAsset(BACKGROUNDFILEPATH);
+

@@ -1,8 +1,8 @@
 /**
  *       OBJETO HOCKEYELEMENT
  * HockeyElement es un objeto que cuenta con las 
- * características base que necesitamos para el 
- * resto de objetos en la aplicación
+ * características que necesitamos para los objetos
+ * que utilizaremos para desarrollar la partida.
  * @param {number} _x 
  * @param {number} _y 
  * @param {number} _altura 
@@ -13,8 +13,13 @@ function HockeyElement(_x, _y, _altura, _anchura){
     this.base = ObjetoBase;
     this.base(_x, _y, _altura, _anchura);
 
-    this.velocidad = 3;
-    this.asset = HOCKEYASSETS;
+    this.posicionInicalEnX = _x;
+    this.posicionInicalEnY = _y;
+
+    this.volverALaPosicionInicial = function(){
+        this.x = this.posicionInicalEnX;
+        this.y = this.posicionInicalEnY;
+    }
 
     this.radio = function(){
         let dxElevadoADos = Math.pow(this.dx(),2);
