@@ -1,20 +1,88 @@
 <!DOCTYPE html>
 <html>
+
     <head>
         <meta charset="utf-8">
         <title>Air Hockey</title>
         <script src="js/constants.js"></script>
         <script src="js/models/objectoBase.js"></script>
+        <script src="js/models/marcador.js"></script>
         <script src="js/models/hockeyElement.js"></script>
+        <script src="js/models/stickHockey.js"></script>
         <script src="js/models/porteria.js"></script>
         <script src="js/models/porteria/porteriaLocal.js"></script>
         <script src="js/models/porteria/porteriaVisitante.js"></script>
         <script src="js/conf.js"></script>
         <script src="js/main.js"></script>
-        <link rel="stylesheet" type="text/css" href="style.css" title="style">
+        <link rel="stylesheet" type="text/css" href="src/css/style.css" title="style">
+        <link rel="shortcut icon" href="src/assets/logo.svg">
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;400;500&display=swap" rel="stylesheet">
     </head>
+
     <body>
-        <h1>Air Hockey</h1>
-        <canvas id="miCanvas" width="380" height="598"></canvas>
+
+        <!--    WRAPPER    -->
+        <div class="wrapper">
+
+            <!--    CABECERA    -->
+            <div class="row">
+                
+                <div class="col-12 cabecera">
+
+                    <img width="150" height="150" src="src/assets/logo.svg">
+
+                </div>
+
+            </div>
+
+            <!--    CUERPO    -->
+            <div class="row">
+
+                <div class="col-12">
+
+                    <!--    OPCIONES    -->
+                    <div class="ml-1 col-3 opciones">
+
+                        <h2>OPCIONES</h2>
+                        <hr>
+                        
+                        <!--<label id="nickName">NickName</label>
+                        <input type="text" name="nickName" id="nickName"></inpu>-->
+
+                    </div>
+
+                    <!--    CANVAS    -->
+                    <div class="col-4">
+
+                        <canvas id="miCanvas" width="380" height="598"></canvas>
+
+                    </div>
+
+                    <!--    RECORDS    -->
+                    <div class="col-3 records">
+
+                        <h2>RECORDS</h2>
+                        <hr>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!--    FOOTER    -->
+            <div class="row">
+
+                <div class="ml-1 col-10 footer">
+
+                    <h2>FOOTER</h2>
+                    <hr>
+    
+                </div>
+
+            </div>
+
+        </div>
     </body>
+
 </html>

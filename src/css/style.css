@@ -1,0 +1,106 @@
+:root{
+    --base: 1600;
+    --tbase: calc(var(--base) * 1px);
+    --tcoluma: calc(var(--base) / 12);
+    --pcolumna: calc(var(--tcoluma)/var(--base) * 100%);
+}
+
+*{
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+}
+
+body{
+    background-color: rgb(0, 0, 0);
+}
+
+h2{
+    color: rgb(199, 199, 199);
+}
+
+hr{
+    margin-left: 75px;
+    margin-right: 75px;
+}
+
+.wrapper{
+    width: 100%;
+    max-width: var(--tbase);
+    margin: 0 auto;
+    text-align: center;
+}
+
+.row{
+    clear: both;
+}
+
+.ml-1{
+    margin-left: var(--pcolumna);
+}
+
+.mt-1{
+    margin-top: var(--pcolumna);
+}
+
+.col-2{
+    width: calc(var(--pcolumna) * 2);
+    float: left;
+}
+
+.col-3{
+    width: calc(var(--pcolumna) * 3);
+    float: left;
+}
+
+.col-4{
+    width: calc(var(--pcolumna) * 4);
+    float: left;
+}
+
+
+.col-6{
+    width: calc(var(--pcolumna) * 6);
+    float: left;
+}
+
+.col-9{
+    width: calc(var(--pcolumna) * 9);
+    float: left;
+}
+
+.col-10{
+    width: calc(var(--pcolumna) * 10);
+    float: left;
+}
+
+.col-12{
+    width: calc(var(--pcolumna) * 12);
+    float: left;
+}
+
+.records, .opciones, .footer{
+    background-color: rgb(22, 22, 22);
+    height: 625px;
+    border-radius: 30px;
+}
+
+.footer{
+    margin-top: 50px;
+    margin-bottom: 50px;
+    height: 150px;
+}
+
+.dif{
+    float: right;
+}
+
+.formNewGame{
+    float: left;
+}
+
+#miCanvas{
+    border: 2px solid;
+    border-radius: 30px;
+    border-color: rgb(0, 0, 0);
+    margin-top: 10px;
+}

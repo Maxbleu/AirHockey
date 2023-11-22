@@ -7,223 +7,18 @@ window.onload = function() {
 	let canvas;
 
 	let puckComeCocos;
-	let stickVisitante;
-	let stickLocal;
 	let marcador;
+
+	let stickLocal;
+	let marcadorLocal;
 	let porteriaLocal;
+
+	let stickVisitante;
+	let marcadorVisitante;
 	let porteriaVisitante;
 
 
 
-
-	/**
-	 *      OBJETO STICKHOCKEY
-	 * Este objeto se encarga de gestionar todas las 
-	 * acciones relacionadas con el objeto StickHockey
-	 * @param {number} _x 
-	 * @param {number} _y 
-	 */
-	function StickHockey(_x, _y){
-
-		this.base = HockeyElement;
-		this.base(_x, _y, 71, 71);
-
-		this.mantenerStickEnElCanvas = function(){
-			if(this.x < LIMITELADOIZQUIERDO){
-				this.x = LIMITELADOIZQUIERDO;
-			}
-			if(this.y < LIMITEMEDIOCAMPO){
-				this.y = LIMITEMEDIOCAMPO;
-			}
-			if(this.coordsLadoDerecho() > LIMITELADODERECHO){
-				this.x = 295;
-			}
-			if(this.coordsParteAbajo() > LIMITEABAJO){
-				this.y = 516;
-			}
-		}
-	}
-	StickHockey.prototype = new HockeyElement;
-	StickHockey.prototype.SKINCOORDS = [100,111];
-	StickHockey.prototype.VELOCIDAD = 3;
-	/**
-	 * 		OBJETO STICKLOCAL
-	 * @param {number} _x 
-	 * @param {number} _y 
-	 */
-	function StickLocal(_x, _y){
-
-		this.base = StickHockey;
-		this.base(_x, _y);
-
-		this.arriba = false;
-		this.abajo = false;
-		this.izquierda = false;
-		this.derecha = false;
-
-		this.mover = function(){
-			if(this.izquierda){
-				this.x -= StickHockey.prototype.VELOCIDAD;
-			}
-			if(this.arriba){
-				this.y -= StickHockey.prototype.VELOCIDAD;
-			}
-			if(this.derecha){
-				this.x += StickHockey.prototype.VELOCIDAD;
-			}
-			if(this.abajo){
-				this.y += StickHockey.prototype.VELOCIDAD;
-			}
-		}
-
-		this.show = function(){
-			ctx.drawImage
-					(
-						HOCKEYASSETS,
-						this.prototype.SKINCOORDS[0],
-						this.prototype.SKINCOORDS[1],
-						this.anchura,
-						this.altura,
-						this.x,
-						this.y,
-						this.anchura,
-						this.altura
-					);
-		}
-	}
-	StickLocal.prototype = StickHockey;
-	/**
-	 * 		OBJETO STICKVISITANTE
-	 * @param {number} _x 
-	 * @param {number} _y 
-	 */
-	function StickVisitante(_x, _y){
-
-		this.base = StickHockey;
-		this.base(_x, _y);
-
-		this.mover = function(){
-			
-		}
-
-		this.show = function(){
-			ctx.drawImage
-					(
-						HOCKEYASSETS,
-						this.prototype.SKINCOORDS[0],
-						this.prototype.SKINCOORDS[1],
-						this.anchura,
-						this.altura,
-						this.x,
-						this.y,
-						this.anchura,
-						this.altura
-					);
-		}
-	}
-	StickVisitante.prototype = StickHockey;
-	/**
-	 *      OBJETO MARCADOR
-	 * @param {number} _x 
-	 * @param {number} _y
-	 */
-	function Marcador(){
-
-		this.golesLocal = 0;
-		this.golesVisitante = 0;
-
-		this.fondoMarcador = {
-			x: 154,
-			y: -1,
-			SKINCOORDS : [27,242],
-			altura: 46,
-			anchura: 71
-		}
-
-		/*this.coordsNumeros = [
-			{
-				x: ,
-				y: ,
-				SKINCOORDS : [305,43],
-				altura: 31,
-				anchura: 19
-			},
-			{
-				x: ,
-				y: ,
-				SKINCOORDS : [16,43]
-				altura: 31,
-				anchura: 5
-			},
-			{
-				x: ,
-				y: ,
-				SKINCOORDS : [36,43],
-				altura: 31,
-				anchura: 19
-			},
-			{
-				x: ,
-				y: ,
-				SKINCOORDS : [70,43],
-				altura: 31,
-				anchura: 19
-			}
-		];
-
-		this.dosPuntos = {
-			x: ,
-			y: ,
-			SKINCOORDS: [340,51],
-			altura: 24,
-			anchura: 4
-		};*/
-
-
-		this.anotarGolDelLocal = function(){
-			this.golesLocal += 1;
-		}
-
-		this.anotarGolDelVisitante = function(){
-			this.golesVisitante += 1;
-		}
-
-		this.show = function(){
-
-			//	Mostrar fondo
-			/*ctx.drawImage(
-				HOCKEYASSETS,
-				this.fondoMarcador.SKINCOORDS[0],
-				this.fondoMarcador.SKINCOORDS[1],
-				this.fondoMarcador.anchura,
-				this.fondoMarcador.altura,
-				this.fondoMarcador.x,
-				this.fondoMarcador.y,
-				this.fondoMarcador.anchura,
-				this.fondoMarcador.altura
-				);*/
-				
-			//	Goles del local
-
-			//	Mostrar dos puntos
-
-			//	Goles del visitante
-		}
-
-		this.haGanadoElEquipoVisitante = function(){
-			if(this.golesVisitante === CANTIDADGOLESPARAGANAR){
-				return true;
-			}
-			return false;
-		}
-
-		this.haGanadoElEquipoLocal = function(){
-			if(this.golesLocal === CANTIDADGOLESPARAGANAR){
-				return true;
-			}
-			return false;
-		}
-	}
 	/**
 	 * 		OBJETO PUCKCOMECOCOS
 	 * Este objeto se encarga de gestionar todas 
@@ -316,6 +111,169 @@ window.onload = function() {
 	PuckComeCocos.prototype = new HockeyElement;
 	PuckComeCocos.prototype.ANIMACIONESCOMECOCOS = [[203,243],[235,243]];
 	PuckComeCocos.prototype.VELOCIDAD = 4;
+	/**
+	 * 		OBJETO STICKLOCAL
+	 * @param {number} _x 
+	 * @param {number} _y 
+	 */
+	function StickLocal(_x, _y){
+
+		this.base = StickHockey;
+		this.base(_x, _y);
+
+		this.arriba = false;
+		this.abajo = false;
+		this.izquierda = false;
+		this.derecha = false;
+
+		this.mover = function(){
+			if(this.izquierda){
+				this.x -= StickHockey.prototype.VELOCIDAD;
+			}
+			if(this.arriba){
+				this.y -= StickHockey.prototype.VELOCIDAD;
+			}
+			if(this.derecha){
+				this.x += StickHockey.prototype.VELOCIDAD;
+			}
+			if(this.abajo){
+				this.y += StickHockey.prototype.VELOCIDAD;
+			}
+		}
+
+		this.show = function(){
+			ctx.drawImage
+					(
+						HOCKEYASSETS,
+						this.prototype.SKINCOORDS[0],
+						this.prototype.SKINCOORDS[1],
+						this.anchura,
+						this.altura,
+						this.x,
+						this.y,
+						this.anchura,
+						this.altura
+					);
+		}
+	}
+	StickLocal.prototype = StickHockey;
+	/**
+	 * 		OBJETO STICKVISITANTE
+	 * @param {number} _x 
+	 * @param {number} _y 
+	 */
+	function StickVisitante(_x, _y){
+
+		this.base = StickHockey;
+		this.base(_x, _y);
+
+		this.direccion = 0;
+		
+
+		this.mover = function(){
+
+			//	Dependiendo del nivel seleccionado la forma de morverse será diferente
+			
+			
+		}
+
+		this.show = function(){
+			ctx.drawImage
+					(
+						HOCKEYASSETS,
+						this.prototype.SKINCOORDS[0],
+						this.prototype.SKINCOORDS[1],
+						this.anchura,
+						this.altura,
+						this.x,
+						this.y,
+						this.anchura,
+						this.altura
+					);
+		}
+	}
+	StickVisitante.prototype = StickHockey;
+	/**
+	 * Este objeto representa el 
+	 * marcador del equipo local
+	 * @param {number} _x 
+	 * @param {number} _y 
+	 */
+	function MarcadorLocal(_x, _y){
+
+		this.base = Marcador;
+		this.base(_x,_y);
+
+		this.golesLocal = 0;
+
+		this.anotarGolDelLocal = function(){
+			this.golesLocal += 1;
+		}
+
+		this.haGanadoElEquipoLocal = function(){
+			if(this.golesLocal === CANTIDADGOLESPARAGANAR){
+				return true;
+			}
+			return false;
+		}
+
+		this.show = function(){
+			ctx.drawImage
+					(
+						HOCKEYASSETS,
+						this.prototype.NUMEROS[this.golesLocal.toString()][0],
+						this.prototype.NUMEROS[this.golesLocal.toString()][1],
+						this.anchura,
+						this.altura,
+						this.x,
+						this.y,
+						this.anchura,
+						this.altura
+					);
+		}
+	}
+	MarcadorLocal.prototype = new Marcador;
+
+	/**
+	 * Este objeto representa el 
+	 * marcador del equipo visitante
+	 * @param {number} _x 
+	 * @param {number} _y 
+	 */
+	function MarcadorVisitante(_x, _y){
+
+		this.base = Marcador;
+		this.base(_x,_y);
+
+		this.golesVisitante = 0;
+
+		this.anotarGolDelVisitante = function(){
+			this.golesVisitante += 1;
+		}
+
+		this.haGanadoElEquipoVisitante = function(){
+			if(this.golesVisitante === CANTIDADGOLESPARAGANAR){
+				return true;
+			}
+			return false;
+		}
+
+		this.show = function(){
+			ctx.drawImage
+					(
+						HOCKEYASSETS,
+						this.prototype.NUMEROS[this.golesVisitante.toString()][0],
+						this.prototype.NUMEROS[this.golesVisitante.toString()][1],
+						this.anchura,
+						this.altura,
+						this.x,
+						this.y,
+						this.anchura,
+						this.altura
+					);
+		}
+	}
+	MarcadorVisitante.prototype = new Marcador;
 
 
 	function gameLoop() {
@@ -332,6 +290,7 @@ window.onload = function() {
 		stickLocal.mantenerStickEnElCanvas();
 		stickLocal.mover();
 
+		stickVisitante.mantenerStickEnElCanvas();
 		stickVisitante.mover();
 
 		//	Comprobamos si el puck ha colisionado con el stick user
@@ -344,14 +303,9 @@ window.onload = function() {
 			puckComeCocos.modificarDireccionDelPuck(stickVisitante);
 		}
 
-		puckComeCocos.show();
-		stickLocal.show();
-		stickVisitante.show();
-		marcador.show();
-
 		//	Comprobamos si el disco ha entrado en la portería local
 		if(porteriaLocal.elDiscoHaEntrado(puckComeCocos)){
-			marcador.anotarGolDelVisitante();
+			marcadorVisitante.anotarGolDelVisitante();
 			if(marcador.haGanadoElEquipoVisitante()){
 				finishGame();
 			}else{
@@ -364,7 +318,7 @@ window.onload = function() {
 
 		//	Comprobamos si el disco ha entrado en la portería visitante
 		if(porteriaVisitante.elDiscoHaEntrado(puckComeCocos)){
-			marcador.anotarGolDelLocal();
+			marcadorLocal.anotarGolDelLocal();
 			if(marcador.haGanadoElEquipoLocal()){
 				finishGame();
 			}else{
@@ -374,6 +328,12 @@ window.onload = function() {
 				stickVisitante.volverALaPosicionInicial();
 			}
 		}
+
+		puckComeCocos.show();
+		stickLocal.show();
+		stickVisitante.show();
+		marcadorLocal.show();
+		marcadorVisitante.show();
 	}
 	/**
 	 * Este método se encarga de iniciar el funcionamiento del juego
@@ -418,8 +378,9 @@ window.onload = function() {
 		porteriaLocal = new PorteriaLocal();
 		porteriaVisitante = new PorteriaVisitante();
 
-		//	Marcador
-		marcador = new Marcador();
+		//	Marcadores
+		marcadorLocal = new MarcadorLocal(189,34);
+		marcadorVisitante = new MarcadorVisitante(189,562);
 	}
 
 
