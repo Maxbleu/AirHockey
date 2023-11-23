@@ -359,7 +359,7 @@ window.onload = function() {
 	 * Este método se encarga de configurar los elementos de 
 	 * la aplicación necesarios para que comienze el juego
 	 */
-	function cargarConfiguración(){
+	function prepararComponentesDeLaAplicacion(){
 
 		canvas = document.getElementById("miCanvas");
 
@@ -445,8 +445,8 @@ window.onload = function() {
 	document.addEventListener("keydown", activarTeclaPulsada, false);
 	document.addEventListener("keyup", desactivarTeclaPulsada, false);
 	
-	//	Configuramos la aplicación
-	cargarConfiguración();
+	//	Preparemos los componentes de la aplicación
+	prepararComponentesDeLaAplicacion();
 
 	//	Lanzamos el juego
 	startGame();
