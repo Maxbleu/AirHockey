@@ -221,8 +221,8 @@ window.onload = function() {
 			ctx.drawImage
 					(
 						HOCKEYASSETS,
-						this.prototype.NUMEROS[this.golesLocal.toString()][0],
-						this.prototype.NUMEROS[this.golesLocal.toString()][1],
+						this.NUMEROS[this.golesLocal].SKINCOORDS[0],
+						this.NUMEROS[this.golesLocal].SKINCOORDS[1],
 						this.anchura,
 						this.altura,
 						this.x,
@@ -262,8 +262,8 @@ window.onload = function() {
 			ctx.drawImage
 					(
 						HOCKEYASSETS,
-						this.prototype.NUMEROS[this.golesVisitante.toString()][0],
-						this.prototype.NUMEROS[this.golesVisitante.toString()][1],
+						this.NUMEROS[this.golesVisitante].SKINCOORDS[0],
+						this.NUMEROS[this.golesVisitante].SKINCOORDS[1],
 						this.anchura,
 						this.altura,
 						this.x,
@@ -306,7 +306,7 @@ window.onload = function() {
 		//	Comprobamos si el disco ha entrado en la portería local
 		if(porteriaLocal.elDiscoHaEntrado(puckComeCocos)){
 			marcadorVisitante.anotarGolDelVisitante();
-			if(marcador.haGanadoElEquipoVisitante()){
+			if(marcadorVisitante.haGanadoElEquipoVisitante()){
 				finishGame();
 			}else{
 				puckComeCocos.volverALaPosicionInicial();
@@ -319,7 +319,7 @@ window.onload = function() {
 		//	Comprobamos si el disco ha entrado en la portería visitante
 		if(porteriaVisitante.elDiscoHaEntrado(puckComeCocos)){
 			marcadorLocal.anotarGolDelLocal();
-			if(marcador.haGanadoElEquipoLocal()){
+			if(marcadorLocal.haGanadoElEquipoLocal()){
 				finishGame();
 			}else{
 				puckComeCocos.volverALaPosicionInicial();
@@ -329,11 +329,11 @@ window.onload = function() {
 			}
 		}
 
+		marcadorLocal.show();
+		marcadorVisitante.show();
 		puckComeCocos.show();
 		stickLocal.show();
 		stickVisitante.show();
-		marcadorLocal.show();
-		marcadorVisitante.show();
 	}
 	/**
 	 * Este método se encarga de iniciar el funcionamiento del juego
@@ -368,7 +368,7 @@ window.onload = function() {
 		//	Creamos los elementos del canvas
 
 		//	Disco
-		puckComeCocos = new PuckComeCocos(176,290);
+		puckComeCocos = new PuckComeCocos(176,288);
 
 		//	Sticks
 		stickLocal = new StickLocal(155,500);
@@ -379,8 +379,8 @@ window.onload = function() {
 		porteriaVisitante = new PorteriaVisitante();
 
 		//	Marcadores
-		marcadorLocal = new MarcadorLocal(189,34);
-		marcadorVisitante = new MarcadorVisitante(189,562);
+		marcadorLocal = new MarcadorLocal(338,317);
+		marcadorVisitante = new MarcadorVisitante(338,250);
 	}
 
 

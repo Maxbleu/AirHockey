@@ -1,6 +1,8 @@
 function Marcador(_x,_y){
-    this.base = ObjetoBase;
-    this.base(_x,_y,31,19);
+    this.x = _x;
+    this.y = _y;
+    this.altura = 31;
+    this.anchura = 19;
 }
 Marcador.prototype.NUMEROS=
 [
@@ -26,4 +28,3 @@ Marcador.prototype.NUMEROS=
         anchura: 19
     }
 ];
-Marcador.prototype = ObjetoBase;
