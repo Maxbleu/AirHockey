@@ -222,7 +222,6 @@ window.onload = function() {
 							this.direccion = Math.PI - this.direccion;
 						}
 
-
 					}else if(Math.floor(this.x) <= Porteria.prototype.INICIOPORTERIA && Math.floor(this.x) >= 118 
 							|| 
 							Math.floor(this.coordsLadoDerecho()) >= Porteria.prototype.FINPORTERIA && Math.floor(this.coordsLadoDerecho() <= 262)){

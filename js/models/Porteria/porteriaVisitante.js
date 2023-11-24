@@ -6,8 +6,10 @@ function PorteriaVisitante(){
     this.base = Porteria;
     this.base();
 
+    this.LINEADEGOL = 13;
+
     this.elDiscoHaEntrado = function(puck){
-        if(puck.x > this.INICIOPORTERIA && puck.coordsLadoDerecho() < this.FINPORTERIA){
+        if(puck.x > Porteria.prototype.INICIOPORTERIA && puck.coordsLadoDerecho() < Porteria.prototype.FINPORTERIA){
             if(puck.coordsParteAbajo() < this.LINEADEGOL){
                 return true;
             }else{
@@ -21,4 +23,3 @@ function PorteriaVisitante(){
 
 }
 PorteriaVisitante.prototype = Porteria;
-PorteriaVisitante.prototype.LINEADEGOL = 7;
