@@ -2,12 +2,13 @@ window.onload = function() {
 
 	let idAnimacionHockey;
 	let idAnimacionAbrirCerrarBoca;
+	let idAnimacionTimer;
 
 	let ctx;
 	let canvas;
 
+	let timer;
 	let puckComeCocos;
-	let marcador;
 
 	let stickLocal;
 	let marcadorLocal;
@@ -18,7 +19,178 @@ window.onload = function() {
 	let porteriaVisitante;
 
 
+	/**
+	 * Este objeto representa el 
+	 * tipo que pasa en la partida
+	 */
+	function Timer(){
 
+		this.segundos = 0;
+		this.minutos = 0;
+
+		this.actualizarTiempo = function(){
+			this.segundos++;
+            if (this.segundos === 60) {
+                this.minutos++;
+                this.segundos = 0;
+            }
+		}
+
+		this.show = function(){
+
+			let unidades = [];
+
+			//	MINUTOS
+
+			let minutosString = this.minutos.toString();
+			unidades = minutosString.split('');
+			if(unidades.length == 1){unidades.unshift(0);}
+			unidades.forEach(function(value){
+				return parseInt(value);
+			});
+
+			//	PRIMER NÚMERO MINUTOS
+			ctx.drawImage
+					(
+						HOCKEYASSETS,
+						this.NUMEROS[unidades[0]].SKINCOORDS[0],
+						this.NUMEROS[unidades[0]].SKINCOORDS[1],
+						this.NUMEROS[unidades[0]].anchura,
+						this.NUMEROS[unidades[0]].altura,
+						18,
+						16,
+						this.NUMEROS[unidades[0]].anchura,
+						this.NUMEROS[unidades[0]].altura
+					);
+
+			//	SEGUNDO NÚMERO MINUTOS
+			ctx.drawImage
+					(
+						HOCKEYASSETS,
+						this.NUMEROS[unidades[1]].SKINCOORDS[0],
+						this.NUMEROS[unidades[1]].SKINCOORDS[1],
+						this.NUMEROS[unidades[1]].anchura,
+						this.NUMEROS[unidades[1]].altura,
+						39,
+						16,
+						this.NUMEROS[unidades[1]].anchura,
+						this.NUMEROS[unidades[1]].altura
+					);
+
+			//	DOS PUNTOS
+			ctx.drawImage
+					(
+						HOCKEYASSETS,
+						this.DOSPUNTOS.SKINCOORDS[0],
+						this.DOSPUNTOS.SKINCOORDS[1],
+						this.DOSPUNTOS.anchura,
+						this.DOSPUNTOS.altura,
+						this.DOSPUNTOS.x,
+						this.DOSPUNTOS.y,
+						this.DOSPUNTOS.anchura,
+						this.DOSPUNTOS.altura
+					);
+
+			//	SEGUNDOS
+			
+			unidades = [];
+			let segundosString = this.segundos.toString();
+			unidades = segundosString.split('');
+			if(unidades.length == 1){unidades.unshift(0);}
+			unidades.forEach(function(value){
+				return parseInt(value);
+			});
+
+			//	PRIMER NÚMERO SEGUNDOS
+			ctx.drawImage
+					(
+						HOCKEYASSETS,
+						this.NUMEROS[unidades[0]].SKINCOORDS[0],
+						this.NUMEROS[unidades[0]].SKINCOORDS[1],
+						this.NUMEROS[unidades[0]].anchura,
+						this.NUMEROS[unidades[0]].altura,
+						66,
+						16,
+						this.NUMEROS[unidades[0]].anchura,
+						this.NUMEROS[unidades[0]].altura
+					);
+
+			//	SEGUNDO NÚMERO SEGUNDOS
+			ctx.drawImage
+					(
+						HOCKEYASSETS,
+						this.NUMEROS[unidades[1]].SKINCOORDS[0],
+						this.NUMEROS[unidades[1]].SKINCOORDS[1],
+						this.NUMEROS[unidades[1]].anchura,
+						this.NUMEROS[unidades[1]].altura,
+						87,
+						16,
+						this.NUMEROS[unidades[1]].anchura,
+						this.NUMEROS[unidades[1]].altura
+					);
+		}
+
+	}
+	Timer.prototype.DOSPUNTOS = {
+		SKINCOORDS : [339,50],
+		altura :24,
+		anchura:4,
+		x:60,
+		y:20
+	};
+	Timer.prototype.NUMEROS = [
+		{
+			SKINCOORDS : [305,43],
+			altura: 31,
+			anchura: 19
+		},
+		{
+	
+			SKINCOORDS : [16,43],
+			altura: 31,
+			anchura: 5
+		},
+		{
+			SKINCOORDS : [36,43],
+			altura: 31,
+			anchura: 19
+		},
+		{
+			SKINCOORDS : [70,43],
+			altura: 31,
+			anchura: 19
+		},
+		{
+			SKINCOORDS : [103,43],
+			altura: 31,
+			anchura: 19 
+		},
+		{
+			SKINCOORDS : [138,43],
+			altura: 31,
+			anchura: 19
+		},
+		{
+			SKINCOORDS : [170,43],
+			altura: 31,
+			anchura: 19
+		},
+		{
+			SKINCOORDS : [204,43],
+			altura: 31,
+			anchura: 19
+		},
+		{
+			SKINCOORDS : [238,43],
+			altura: 31,
+			anchura: 19
+		},
+		{
+			SKINCOORDS : [271,43],
+			altura: 31,
+			anchura: 19
+		}
+	];
 	/**
 	 * 		OBJETO PUCKCOMECOCOS
 	 * Este objeto se encarga de gestionar todas 
@@ -33,6 +205,8 @@ window.onload = function() {
 
 		this.direccion = 0;
 		this.posicionAnimacionComecocos = 0;
+		this.haEntradoUnaParteEnLaPorteriaLocal = false;
+		this.haEntradoUnaParteEnLaPorteriaVisitante = false;
 
 
 		this.abrirCierraBoca = function(){
@@ -41,26 +215,41 @@ window.onload = function() {
 
 		this.mantenerPuckEnElCanvas = function(){
 			if(this.direccion != 0){
-				if(Math.floor(this.y) <= LIMITEARRIBA) {
+				if(Math.floor(this.y) < LIMITEARRIBA) {
 
-					if(Math.floor(this.x) === Porteria.prototype.INICIOPORTERIA || Math.floor(this.coordsLadoDerecho()) === Porteria.prototype.FINPORTERIA){
-						this.direccion = Math.PI - this.direccion;
-					}
+					if(this.haEntradoUnaParteEnLaPorteriaVisitante){
+						if(Math.floor(this.x) < Porteria.prototype.INICIOPORTERIA || Math.floor(this.coordsLadoDerecho()) > Porteria.prototype.FINPORTERIA){
+							this.direccion = Math.PI - this.direccion;
+						}
 
-					if(Math.floor(this.x) < Porteria.prototype.INICIOPORTERIA || Math.floor(this.coordsLadoDerecho()) > Porteria.prototype.FINPORTERIA){
+
+					}else if(Math.floor(this.x) <= Porteria.prototype.INICIOPORTERIA && Math.floor(this.x) >= 118 
+							|| 
+							Math.floor(this.coordsLadoDerecho()) >= Porteria.prototype.FINPORTERIA && Math.floor(this.coordsLadoDerecho() <= 262)){
+
+						this.direccion = -this.direccion;
+
+					}else if(Math.floor(this.x) < Porteria.prototype.INICIOPORTERIA || Math.floor(this.coordsLadoDerecho()) > Porteria.prototype.FINPORTERIA){
 						this.direccion = -this.direccion;
 					}
+
 				}
 				if(Math.floor(this.x) < LIMITELADOIZQUIERDO || Math.floor(this.coordsLadoDerecho()) > LIMITELADODERECHO){
 					this.direccion = Math.PI - this.direccion;
 				}
 				if(Math.floor(this.coordsParteAbajo()) > LIMITEABAJO){
 
-					if(Math.floor(this.x) === Porteria.prototype.INICIOPORTERIA || Math.floor(this.coordsLadoDerecho()) === Porteria.prototype.FINPORTERIA){
-						this.direccion = Math.PI - this.direccion;
-					}
+					if(this.haEntradoUnaParteEnLaPorteriaLocal){
+						if(Math.floor(this.x) < Porteria.prototype.INICIOPORTERIA || Math.floor(this.coordsLadoDerecho()) > Porteria.prototype.FINPORTERIA){
+							this.direccion = Math.PI - this.direccion;
+						}
+					}else if(Math.floor(this.x) <= Porteria.prototype.INICIOPORTERIA && Math.floor(this.x) >= 118 
+							|| 
+							Math.floor(this.coordsLadoDerecho()) >= Porteria.prototype.FINPORTERIA && Math.floor(this.coordsLadoDerecho() <= 262)){
 
-					if(Math.floor(this.x) < Porteria.prototype.INICIOPORTERIA || Math.floor(this.coordsLadoDerecho()) > Porteria.prototype.FINPORTERIA){
+						this.direccion = -this.direccion;
+
+					}else if(Math.floor(this.x) < Porteria.prototype.INICIOPORTERIA || Math.floor(this.coordsLadoDerecho()) > Porteria.prototype.FINPORTERIA){
 						this.direccion = -this.direccion;
 					}
 				}
@@ -204,14 +393,12 @@ window.onload = function() {
 		this.base = Marcador;
 		this.base(_x,_y);
 
-		this.golesLocal = 0;
-
 		this.anotarGolDelLocal = function(){
-			this.golesLocal += 1;
+			this.goles += 1;
 		}
 
 		this.haGanadoElEquipoLocal = function(){
-			if(this.golesLocal === CANTIDADGOLESPARAGANAR){
+			if(this.goles === CANTIDADGOLESPARAGANAR){
 				return true;
 			}
 			return false;
@@ -221,8 +408,8 @@ window.onload = function() {
 			ctx.drawImage
 					(
 						HOCKEYASSETS,
-						this.NUMEROS[this.golesLocal].SKINCOORDS[0],
-						this.NUMEROS[this.golesLocal].SKINCOORDS[1],
+						this.NUMEROS[this.goles].SKINCOORDS[0],
+						this.NUMEROS[this.goles].SKINCOORDS[1],
 						this.anchura,
 						this.altura,
 						this.x,
@@ -245,14 +432,12 @@ window.onload = function() {
 		this.base = Marcador;
 		this.base(_x,_y);
 
-		this.golesVisitante = 0;
-
 		this.anotarGolDelVisitante = function(){
-			this.golesVisitante += 1;
+			this.goles += 1;
 		}
 
 		this.haGanadoElEquipoVisitante = function(){
-			if(this.golesVisitante === CANTIDADGOLESPARAGANAR){
+			if(this.goles === CANTIDADGOLESPARAGANAR){
 				return true;
 			}
 			return false;
@@ -262,8 +447,8 @@ window.onload = function() {
 			ctx.drawImage
 					(
 						HOCKEYASSETS,
-						this.NUMEROS[this.golesVisitante].SKINCOORDS[0],
-						this.NUMEROS[this.golesVisitante].SKINCOORDS[1],
+						this.NUMEROS[this.goles].SKINCOORDS[0],
+						this.NUMEROS[this.goles].SKINCOORDS[1],
 						this.anchura,
 						this.altura,
 						this.x,
@@ -311,6 +496,8 @@ window.onload = function() {
 			}else{
 				puckComeCocos.volverALaPosicionInicial();
 				puckComeCocos.direccion = 0;
+				puckComeCocos.haEntradoUnaParteEnLaPorteriaLocal = false;
+				puckComeCocos.haEntradoUnaParteEnLaPorteriaVisitante = false;
 				stickLocal.volverALaPosicionInicial();
 				stickVisitante.volverALaPosicionInicial();
 			}
@@ -324,11 +511,14 @@ window.onload = function() {
 			}else{
 				puckComeCocos.volverALaPosicionInicial();
 				puckComeCocos.direccion = 0;
+				puckComeCocos.haEntradoUnaParteEnLaPorteriaLocal = false;
+				puckComeCocos.haEntradoUnaParteEnLaPorteriaVisitante = false;
 				stickLocal.volverALaPosicionInicial();
 				stickVisitante.volverALaPosicionInicial();
 			}
 		}
 
+		timer.show();
 		marcadorLocal.show();
 		marcadorVisitante.show();
 		puckComeCocos.show();
@@ -346,6 +536,11 @@ window.onload = function() {
 		idAnimacionAbrirCerrarBoca = setInterval(function(){
 			puckComeCocos.abrirCierraBoca()
 		}, 1000/8);
+
+		//	Lanzamos la animación timer
+		idAnimacionTimer = setInterval(function(){
+			timer.actualizarTiempo()
+		},1000);
 	}
 	/**
 	 * Este método se encarga de cerrar 
@@ -381,6 +576,9 @@ window.onload = function() {
 		//	Marcadores
 		marcadorLocal = new MarcadorLocal(338,317);
 		marcadorVisitante = new MarcadorVisitante(338,250);
+
+		//	Timer
+		timer = new Timer();
 	}
 
 

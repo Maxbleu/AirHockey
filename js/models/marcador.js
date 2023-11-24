@@ -3,6 +3,9 @@ function Marcador(_x,_y){
     this.y = _y;
     this.altura = 31;
     this.anchura = 19;
+
+    this.goles = 0;
+
 }
 Marcador.prototype.NUMEROS=
 [

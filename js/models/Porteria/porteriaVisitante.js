@@ -1,21 +1,24 @@
 /**
  *      OBJEETO PORTERIAVISITANTE
  */
-class PorteriaVisitante extends Porteria{
+function PorteriaVisitante(){
 
-    LINEADEGOL = 7;
+    this.base = Porteria;
+    this.base();
 
-    constructor(){
-        super();
-    }
-
-    elDiscoHaEntrado(puck){
+    this.elDiscoHaEntrado = function(puck){
         if(puck.x > this.INICIOPORTERIA && puck.coordsLadoDerecho() < this.FINPORTERIA){
             if(puck.coordsParteAbajo() < this.LINEADEGOL){
-                console.log("GOL Del Local!!!!");
                 return true;
+            }else{
+                if(puck.y < this.LINEADEGOL){
+                    puck.haEntradoUnaParteEnLaPorteriaVisitante = true;
+                }
             }
         }
         return false;
     }
+
 }
+PorteriaVisitante.prototype = Porteria;
+PorteriaVisitante.prototype.LINEADEGOL = 7;

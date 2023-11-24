@@ -1,21 +1,24 @@
 /**
  *      OBJETO PORTERIALOCAL
  */
-class PorteriaLocal extends Porteria{
+function PorteriaLocal(){
 
-    LINEADEGOL = 590;
+    this.base = Porteria;
+    this.base();
 
-    constructor(){
-        super();
-    }
-
-    elDiscoHaEntrado(puck){
+    this.elDiscoHaEntrado = function(puck){
         if(puck.x > this.INICIOPORTERIA && puck.coordsLadoDerecho() < this.FINPORTERIA){
             if(puck.y > this.LINEADEGOL){
-                console.log("GOL Del Visitante!!!!");
                 return true;
+            }else{
+                if(puck.coordsParteAbajo() > this.LINEADEGOL){
+                    puck.haEntradoUnaParteEnLaPorteriaLocal = true;
+                }
             }
         }
         return false;
     }
+
 }
+PorteriaLocal.prototype = Porteria;
+PorteriaLocal.prototype.LINEADEGOL = 590;

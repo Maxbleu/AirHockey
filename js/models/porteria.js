@@ -6,5 +6,7 @@
 function Porteria(){
 
 }
-Porteria.prototype.INICIOPORTERIA = 120;
-Porteria.prototype.FINPORTERIA = 255;
+Porteria.prototype.INICIOPORTERIA = 122;
+Porteria.prototype.FINPORTERIA = 258;
+Porteria.prototype.PALODERECHO = 118;
+Porteria.prototype.PALOIZQUIERDO = 262;
