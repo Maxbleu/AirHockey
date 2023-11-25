@@ -1,4 +1,4 @@
-function launchGame() {
+window.onload = function() {
 
 	let idAnimacionHockey;
 	let idAnimacionAbrirCerrarBoca;
@@ -6,6 +6,8 @@ function launchGame() {
 
 	let ctx;
 	let canvas;
+	let inputNickName;
+	let botonStartGame;
 
 	let timer;
 	let puckComeCocos;
@@ -360,9 +362,11 @@ function launchGame() {
 
 		this.mover = function(){
 
-			//	Dependiendo del nivel seleccionado la forma de morverse será diferente
 			
-			
+
+			// Mueve el stickVisitante en la dirección calculada
+			//this.x += velocidad * Math.cos(this.direccion);
+			//this.y += velocidad * Math.sin(this.direccion);
 		}
 
 		this.show = function(){
@@ -556,6 +560,8 @@ function launchGame() {
 	 */
 	function prepararComponentesDeLaAplicacion(){
 
+		//	Preparación del canvas
+
 		canvas = document.getElementById("miCanvas");
 
 		ctx = canvas.getContext("2d");
@@ -579,6 +585,22 @@ function launchGame() {
 
 		//	Timer
 		timer = new Timer();
+
+		//	Colocamos el fondo
+		ctx.drawImage(BACKGROUND,0,0,380,599,0,0,380,599);
+
+		//	Preparación del evento que lanza el programa
+
+		botonStartGame = document.getElementById("buttonStartGame");
+
+		inputNickName = document.getElementsByClassName("inputNickName")[0];
+
+		botonStartGame.addEventListener("click", () =>{
+			if(inputNickName.value != ""){
+				startGame();
+			}
+		});
+
 	}
 
 
@@ -645,9 +667,6 @@ function launchGame() {
 	
 	//	Preparemos los componentes de la aplicación
 	prepararComponentesDeLaAplicacion();
-
-	//	Lanzamos el juego
-	startGame();
 
 	canvas.focus();
 }

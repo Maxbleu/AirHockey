@@ -135,6 +135,7 @@ li{
 	background: transparent;
 	padding: .4em;
 }
+
 .botoneraDificultades{
     background-color: black;
     margin-top: 20px;
@@ -153,7 +154,34 @@ li{
     border-radius: 7px;
 }
 
-.buttonStartGame {
+.botonDifucultad:hover{
+    appearance: none;
+	border: none;
+	outline: none;
+    margin-right: 10px;
+    font-weight: bold;
+    color: var(--colorFondo);
+    background-color: var(--colorTexto);
+    border-radius: 7px;
+    cursor: pointer;
+}
+
+.botonEassy:hover, .botonEassy:focus{
+    background-color: #2c2c8a;
+    color: var(--colorTexto);
+}
+
+.botonMedium:hover, .botonMedium:focus{
+    background-color: #9a7900;
+    color: var(--colorTexto);
+}
+
+.botonYashin:hover, .botonYashin:focus{
+    background-color: #bf000d;
+    color: var(--colorTexto);
+}
+
+#buttonStartGame {
     padding: 0.6em 2em;
     border: none;
     outline: none;
@@ -169,7 +197,7 @@ li{
     font-weight: bold;
 }
 
-.buttonStartGame:before {
+#buttonStartGame:before {
     content: "";
     background: linear-gradient(
         45deg,
@@ -209,7 +237,7 @@ li{
     }
 }
 
-.buttonStartGame:after {
+#buttonStartGame:after {
     z-index: -1;
     content: "";
     position: absolute;
