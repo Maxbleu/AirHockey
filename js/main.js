@@ -4,10 +4,16 @@ window.onload = function() {
 	let idAnimacionAbrirCerrarBoca;
 	let idAnimacionTimer;
 
+	let dificulty;
+
 	let ctx;
 	let canvas;
+
 	let inputNickName;
 	let botonStartGame;
+	let botonEassy;
+	let botonMedium;
+	let botonYashin;
 
 	let timer;
 	let puckComeCocos;
@@ -21,6 +27,32 @@ window.onload = function() {
 	let porteriaVisitante;
 
 
+
+
+	/**
+	 *      OBJETO DIFICULTIES
+	 * Este objeto manejará las diferentes 
+	 * dificultades del video juego
+	 */
+	function Dificulties(){}
+	Dificulties.prototype.DIFICULTAD = {
+		EASSY : 1,
+		MEDIUM : 2,
+		YASHIN : 3
+	};
+	Dificulties.prototype.getSelectedDificulty = function(){
+		if(botonEassy === document.activeElement){
+			return this.prototype.MOVIMIENTOS.EASSY;
+		}
+
+		if(botonMedium === document.activeElement){
+			return this.prototype.MOVIMIENTOS.MEDIUM;
+		}
+
+		if(botonYashin === document.activeElement){
+			return this.prototype.MOVIMIENTOS.YASHIN;
+		}
+	}
 	/**
 	 * Este objeto representa el 
 	 * tipo que pasa en la partida
@@ -362,8 +394,18 @@ window.onload = function() {
 
 		this.mover = function(){
 
-			
+			switch(dificulty){
 
+				case Dificulties.prototype.MOVIMIENTOS.EASSY:
+					break;
+
+				case Dificulties.prototype.MOVIMIENTOS.MEDIUM:
+					break;
+
+				case Dificulties.prototype.MOVIMIENTOS.YASHIN:
+					break;
+
+			}
 			// Mueve el stickVisitante en la dirección calculada
 			//this.x += velocidad * Math.cos(this.direccion);
 			//this.y += velocidad * Math.sin(this.direccion);
@@ -464,6 +506,7 @@ window.onload = function() {
 	MarcadorVisitante.prototype = new Marcador;
 
 
+
 	function gameLoop() {
 		
 		//	borramos el canvas
@@ -544,6 +587,10 @@ window.onload = function() {
 		idAnimacionTimer = setInterval(function(){
 			timer.actualizarTiempo()
 		},1000);
+
+		//	Obetner dificultad
+
+		dificulty = Dificulties.prototype.getSelectedDificulty();
 	}
 	/**
 	 * Este método se encarga de cerrar 
@@ -554,6 +601,9 @@ window.onload = function() {
 		clearInterval(idAnimacionHockey);
 		clearInterval(idAnimacionTimer);
 	}
+
+
+
 	/**
 	 * Este método se encarga de configurar los elementos de 
 	 * la aplicación necesarios para que comienze el juego
@@ -601,7 +651,17 @@ window.onload = function() {
 			}
 		});
 
+
+		//	Cargar botones de las dificultades
+
+		botonEassy = document.getElementsByClassName("botonEassy")[0];
+
+		botonMedium = document.getElementsByClassName("botonMedium")[0];
+
+		botonYashin = document.getElementsByClassName("botonYashin")[0];
+
 	}
+
 
 
 	/**

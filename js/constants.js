@@ -15,9 +15,3 @@ const MOVIMIENTOS = {
     DERECHA : 39,
     ABAJO : 40
 };
-
-const DIFICULTAD = {
-    EASSY : 1,
-    MEDIUM : 2,
-    HARD : 3
-};
