@@ -46,8 +46,36 @@
                         <h2>OPCIONES</h2>
                         <hr>
                         
-                        <!--<label id="nickName">NickName</label>
-                        <input type="text" name="nickName" id="nickName"></inpu>-->
+                        <form action="" class="formStartGame">
+
+                            <div class="row">
+                                <div class="mt-2 col-12">
+                                    <label id="nickName">NickName</label>
+                                    <input type="text" name="nickName" id="nickName" placeholder="nickName" class="inputNickName" required>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="mt-2 col-6">
+                                    <label id="dificulty">Dificultad</label>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="ml-2 col-9 botoneraDificultades">
+                                    <button class="ml-1 col-3 botonDifucultad">EASSY</button>
+                                    <button class="col-3 botonDifucultad">MEDIUM</button>
+                                    <button class="col-3 botonDifucultad">YASHIN</button>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="ml-1 mt-2 col-6">
+                                    <button class="buttonStartGame" onclick="launchGame()">START GAME</button>
+                                </div>
+                            </div>
+
+                        </form>
 
                     </div>
 
@@ -64,23 +92,19 @@
                         <h2>RECORDS</h2>
                         <hr>
 
+                        <div class="ml-2 col-11">
+
+                            <ol class="tableRecords">
+                            
+                            </ol>
+
+                        </div>
+
                     </div>
 
                 </div>
 
             </div>
-
-            <!--    FOOTER    -->
-            <!--<div class="row">
-
-                <div class="ml-1 col-10 footer">
-
-                    <h2>FOOTER</h2>
-                    <hr>
-    
-                </div>
-
-            </div>-->
 
         </div>
     </body>

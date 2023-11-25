@@ -1,4 +1,4 @@
-window.onload = function() {
+function launchGame() {
 
 	let idAnimacionHockey;
 	let idAnimacionAbrirCerrarBoca;
@@ -548,6 +548,7 @@ window.onload = function() {
 	function finishGame(){
 		clearInterval(idAnimacionAbrirCerrarBoca);
 		clearInterval(idAnimacionHockey);
+		clearInterval(idAnimacionTimer);
 	}
 	/**
 	 * Este método se encarga de configurar los elementos de 

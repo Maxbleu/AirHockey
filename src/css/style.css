@@ -3,6 +3,8 @@
     --tbase: calc(var(--base) * 1px);
     --tcoluma: calc(var(--base) / 12);
     --pcolumna: calc(var(--tcoluma)/var(--base) * 100%);
+    --colorTexto: rgb(199, 199, 199);
+    --colorFondo: rgb(22, 22, 22);
 }
 
 *{
@@ -15,12 +17,16 @@ body{
 }
 
 h2{
-    color: rgb(199, 199, 199);
+    color: var(--colorTexto);
 }
 
 hr{
     margin-left: 75px;
     margin-right: 75px;
+}
+
+li{
+    margin-top: 20px;
 }
 
 .wrapper{
@@ -38,9 +44,18 @@ hr{
     margin-left: var(--pcolumna);
 }
 
+.ml-2{
+    margin-left: calc(var(--pcolumna) * 2);
+}
+
 .mt-1{
     margin-top: var(--pcolumna);
 }
+
+.mt-2{
+    margin-top: calc(var(--pcolumna) * 2);
+}
+
 
 .col-2{
     width: calc(var(--pcolumna) * 2);
@@ -79,7 +94,7 @@ hr{
 }
 
 .records, .opciones, .footer{
-    background-color: rgb(22, 22, 22);
+    background-color: var(--colorFondo);
     height: 600px;
     border-radius: 30px;
 }
@@ -101,5 +116,107 @@ hr{
 #miCanvas{
     border: 2px solid;
     border-radius: 30px;
-    border-color: rgb(0, 0, 0);
+}
+
+#nickName, #dificulty{
+    color: var(--colorTexto);
+    font-weight: bolder;
+}
+
+#nickName{
+    margin-right: 10px;
+}
+
+.inputNickName{
+    appearance: none;
+	border: none;
+	outline: none;
+	border-bottom: .2em solid var(--colorTexto);
+	background: transparent;
+	padding: .4em;
+}
+.botoneraDificultades{
+    background-color: black;
+    margin-top: 20px;
+    padding: 15px;
+    border-radius: 10px;
+}
+
+.botonDifucultad{
+    appearance: none;
+	border: none;
+	outline: none;
+    margin-right: 10px;
+    font-weight: bold;
+    color: var(--colorTexto);
+    background-color: var(--colorFondo);
+    border-radius: 7px;
+}
+
+.buttonStartGame {
+    padding: 0.6em 2em;
+    border: none;
+    outline: none;
+    color: rgb(255, 255, 255);
+    background: #111;
+    cursor: pointer;
+    position: relative;
+    z-index: 0;
+    border-radius: 10px;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    font-weight: bold;
+}
+
+.buttonStartGame:before {
+    content: "";
+    background: linear-gradient(
+        45deg,
+        #ff0000,
+        #ff7300,
+        #fffb00,
+        #48ff00,
+        #00ffd5,
+        #002bff,
+        #7a00ff,
+        #ff00c8,
+        #ff0000
+    );
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    background-size: 400%;
+    z-index: -1;
+    filter: blur(5px);
+    -webkit-filter: blur(5px);
+    width: calc(100% + 4px);
+    height: calc(100% + 4px);
+    animation: glowing-button-85 20s linear infinite;
+    transition: opacity 0.3s ease-in-out;
+    border-radius: 10px;
+}
+
+@keyframes glowing-button-85 {
+    0% {
+        background-position: 0 0;
+    }
+    50% {
+        background-position: 400% 0;
+    }
+    100% {
+        background-position: 0 0;
+    }
+}
+
+.buttonStartGame:after {
+    z-index: -1;
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: #222;
+    left: 0;
+    top: 0;
+    border-radius: 10px;
 }
