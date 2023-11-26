@@ -136,51 +136,61 @@ li{
 	padding: .4em;
 }
 
-.botoneraDificultades{
-    background-color: black;
-    margin-top: 20px;
-    padding: 15px;
-    border-radius: 10px;
+
+
+/**    RADIO-INPUTS    **/
+.radio-inputs {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    border-radius: 0.5rem;
+    background-color: #000000;
+    box-sizing: border-box;
+    box-shadow: 0 0 0px 1px rgba(0, 0, 0, 0.06);
+    padding: 0.25rem;
+    width: 300px;
+    font-size: 14px;
 }
 
-.botonDifucultad{
-    appearance: none;
-	border: none;
-	outline: none;
-    margin-right: 10px;
-    font-weight: bold;
-    color: var(--colorTexto);
-    background-color: var(--colorFondo);
-    border-radius: 7px;
+.radio-inputs .radio {
+    flex: 1 1 auto;
+    text-align: center;
 }
 
-.botonDifucultad:hover{
-    appearance: none;
-	border: none;
-	outline: none;
-    margin-right: 10px;
-    font-weight: bold;
-    color: var(--colorFondo);
-    background-color: var(--colorTexto);
-    border-radius: 7px;
+.radio-inputs .radio input {
+    display: none;
+}
+
+.radio-inputs .radio .name {
+    display: flex;
     cursor: pointer;
-}
-
-.botonEassy:hover, .botonEassy:focus{
-    background-color: #2c2c8a;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.5rem;
+    border: none;
+    padding: .5rem 0;
     color: var(--colorTexto);
+    transition: all .15s ease-in-out;
 }
 
-.botonMedium:hover, .botonMedium:focus{
-    background-color: #9a7900;
-    color: var(--colorTexto);
+.radio-inputs .radio input:checked + .name {
+    font-weight: 600;
 }
 
-.botonYashin:hover, .botonYashin:focus{
-    background-color: #bf000d;
-    color: var(--colorTexto);
+#spanInputEassy:hover, input:checked + #spanInputEassy{
+    background-color: #959537;
 }
 
+#spanInputMedium:hover, input:checked + #spanInputMedium{
+    background-color: rgb(48, 136, 155);
+}
+
+#spanInputYashin:hover, input:checked + #spanInputYashin{
+    background-color: rgb(155, 68, 48);
+}
+
+
+/**    BUTTONSTARTGAME    **/
 #buttonStartGame {
     padding: 0.6em 2em;
     border: none;
@@ -247,4 +257,17 @@ li{
     left: 0;
     top: 0;
     border-radius: 10px;
+}
+
+/**   LISTA RECORDS   **/
+
+ul{
+    list-style: none;
+}
+
+li{
+
+    font-size: 20px;
+    color: var(--colorTexto);
+
 }

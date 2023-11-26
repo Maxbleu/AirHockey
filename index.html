@@ -5,6 +5,10 @@
         <meta charset="utf-8">
         <title>Air Hockey</title>
         <script src="js/constants.js"></script>
+        <script src="js/conf/assets.js"></script>
+        <script src="js/conf/records.js"></script>
+        <script src="js/models/record.js"></script>
+        <script src="js/conf.js"></script>
         <script src="js/models/objectoBase.js"></script>
         <script src="js/models/marcador.js"></script>
         <script src="js/models/hockeyElement.js"></script>
@@ -12,7 +16,6 @@
         <script src="js/models/porteria.js"></script>
         <script src="js/models/porteria/porteriaLocal.js"></script>
         <script src="js/models/porteria/porteriaVisitante.js"></script>
-        <script src="js/conf.js"></script>
         <script src="js/main.js"></script>
         <link rel="stylesheet" type="text/css" href="src/css/style.css" title="style">
         <link rel="shortcut icon" href="src/assets/logo.svg">
@@ -60,10 +63,19 @@
                         </div>
 
                         <div class="row">
-                            <div class="ml-2 col-9 botoneraDificultades">
-                                <button class="ml-1 col-3 botonDifucultad botonEassy">EASSY</button>
-                                <button class="col-3 botonDifucultad botonMedium">MEDIUM</button>
-                                <button class="col-3 botonDifucultad botonYashin">YASHIN</button>
+                            <div class="ml-2 radio-inputs">
+                                <label class="radio">
+                                    <input type="radio" name="radio" id="radioButtonEassy">
+                                    <span class="name" id="spanInputEassy">Eassy</span>
+                                </label>
+                                <label class="radio">
+                                    <input type="radio" name="radio" id="radioButtonMedium">
+                                    <span class="name" id="spanInputMedium">Medium</span>
+                                </label>
+                                <label class="radio">
+                                    <input type="radio" name="radio" id="radioButtonYashin">
+                                    <span class="name" id="spanInputYashin">Yashin</span>
+                                </label>
                             </div>
                         </div>
 
@@ -88,11 +100,11 @@
                         <h2>RECORDS</h2>
                         <hr>
 
-                        <div class="ml-2 col-11">
+                        <div class="col-10">
 
-                            <ol class="tableRecords">
+                            <ul id="tablaRecords">
                             
-                            </ol>
+                            </ul>
 
                         </div>
 

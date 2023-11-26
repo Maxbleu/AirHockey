@@ -11,9 +11,10 @@ window.onload = function() {
 
 	let inputNickName;
 	let botonStartGame;
-	let botonEassy;
-	let botonMedium;
-	let botonYashin;
+	let radioButtonEassy;
+	let radioButtonMedium;
+	let radioButtonYashin;
+	let tablaRecords;
 
 	let timer;
 	let puckComeCocos;
@@ -26,32 +27,57 @@ window.onload = function() {
 	let marcadorVisitante;
 	let porteriaVisitante;
 
-
-
-
 	/**
 	 *      OBJETO DIFICULTIES
 	 * Este objeto manejará las diferentes 
 	 * dificultades del video juego
 	 */
 	function Dificulties(){}
-	Dificulties.prototype.DIFICULTAD = {
+	Dificulties.prototype.DIFICULTADES = {
 		EASSY : 1,
 		MEDIUM : 2,
 		YASHIN : 3
 	};
 	Dificulties.prototype.getSelectedDificulty = function(){
-		if(botonEassy === document.activeElement){
-			return this.prototype.MOVIMIENTOS.EASSY;
+		if(radioButtonEassy.checked){
+			return Dificulties.prototype.DIFICULTADES.EASSY;
 		}
 
-		if(botonMedium === document.activeElement){
-			return this.prototype.MOVIMIENTOS.MEDIUM;
+		if(radioButtonMedium.checked){
+			return Dificulties.prototype.DIFICULTADES.MEDIUM;
 		}
 
-		if(botonYashin === document.activeElement){
-			return this.prototype.MOVIMIENTOS.YASHIN;
+		if(radioButtonYashin.checked){
+			return Dificulties.prototype.DIFICULTADES.YASHIN;
 		}
+	}
+	Dificulties.prototype.userChooseDificulty = function(){
+		if(radioButtonEassy.checked){
+			return true;
+		}
+
+		if(radioButtonMedium.checked){
+			return true;
+		}
+
+		if(radioButtonYashin.checked){
+			return true;
+		}
+	}
+	Dificulties.prototype.getNameDificulty = function(dificultad){
+		let nameDificulty;
+		switch(dificultad){
+			case Dificulties.prototype.DIFICULTADES.EASSY:
+				nameDificulty = "EASSY";
+				break;
+			case Dificulties.prototype.DIFICULTADES.MEDIUM:
+				nameDificulty = "MEDIUM";
+				break;
+			case Dificulties.prototype.DIFICULTADES.YASHIN:
+				nameDificulty = "YASHIN";
+				break;
+		}
+		return nameDificulty;
 	}
 	/**
 	 * Este objeto representa el 
@@ -68,6 +94,11 @@ window.onload = function() {
                 this.minutos++;
                 this.segundos = 0;
             }
+		}
+
+		this.toString = function(){
+			if(this.segundos<=9){this.segundos = "0" + this.segundos;}
+			return `${this.minutos}:${this.segundos}`;
 		}
 
 		this.show = function(){
@@ -396,13 +427,13 @@ window.onload = function() {
 
 			switch(dificulty){
 
-				case Dificulties.prototype.MOVIMIENTOS.EASSY:
+				case Dificulties.prototype.DIFICULTADES.EASSY:
 					break;
 
-				case Dificulties.prototype.MOVIMIENTOS.MEDIUM:
+				case Dificulties.prototype.DIFICULTADES.MEDIUM:
 					break;
 
-				case Dificulties.prototype.MOVIMIENTOS.YASHIN:
+				case Dificulties.prototype.DIFICULTADES.YASHIN:
 					break;
 
 			}
@@ -597,9 +628,22 @@ window.onload = function() {
 	 * parar el funcionamiento del juego
 	 */
 	function finishGame(){
+		
 		clearInterval(idAnimacionAbrirCerrarBoca);
 		clearInterval(idAnimacionHockey);
 		clearInterval(idAnimacionTimer);
+
+		//	Creamos el record para mostrarlo y 
+		//	almacenarlo en localStorage
+
+		let nameDificulty = Dificulties.prototype.getNameDificulty(dificulty);
+
+		let record = new Record(inputNickName.value,timer.toString(),dificulty,nameDificulty);
+		Records.saveRecordInList(record);
+
+		//	Mostrar en el panel de records
+		Records.showListRecords(tablaRecords);
+
 	}
 
 
@@ -609,12 +653,6 @@ window.onload = function() {
 	 * la aplicación necesarios para que comienze el juego
 	 */
 	function prepararComponentesDeLaAplicacion(){
-
-		//	Preparación del canvas
-
-		canvas = document.getElementById("miCanvas");
-
-		ctx = canvas.getContext("2d");
 
 		//	Creamos los elementos del canvas
 
@@ -636,9 +674,26 @@ window.onload = function() {
 		//	Timer
 		timer = new Timer();
 
-		//	Colocamos el fondo
-		ctx.drawImage(BACKGROUND,0,0,380,599,0,0,380,599);
+	}
+	/**
+	 * Este método se encarga de enlazar los elementos de la página a los ficheros javascript
+	 */
+	function cargarComponentesDeLaPagina(){
+		//	Cargar botones de las dificultades
 
+		radioButtonEassy = document.getElementById("radioButtonEassy");
+
+		radioButtonMedium = document.getElementById("radioButtonMedium");
+
+		radioButtonYashin = document.getElementById("radioButtonYashin");
+
+		//	Cargar elemento de la tabla de records
+
+		tablaRecords = document.getElementById("tablaRecords");
+
+		Records.showListRecords(tablaRecords);
+
+		//	Preparemos los componentes de la aplicación
 		//	Preparación del evento que lanza el programa
 
 		botonStartGame = document.getElementById("buttonStartGame");
@@ -647,19 +702,16 @@ window.onload = function() {
 
 		botonStartGame.addEventListener("click", () =>{
 			if(inputNickName.value != ""){
-				startGame();
+				if(Dificulties.prototype.userChooseDificulty()){
+					prepararComponentesDeLaAplicacion();
+					startGame();
+				}else{
+					alert("Seleccione la dificultad de su partida");
+				}
+			}else{
+				alert("Intruzca un nombre para su usuario");
 			}
 		});
-
-
-		//	Cargar botones de las dificultades
-
-		botonEassy = document.getElementsByClassName("botonEassy")[0];
-
-		botonMedium = document.getElementsByClassName("botonMedium")[0];
-
-		botonYashin = document.getElementsByClassName("botonYashin")[0];
-
 	}
 
 
@@ -719,14 +771,22 @@ window.onload = function() {
 	
 	//	MAIN
 
+	//	Preparación del canvas
+
+	canvas = document.getElementById("miCanvas");
+
+	ctx = canvas.getContext("2d");
+
+	//	Colocamos el fondo
+	ctx.drawImage(BACKGROUND,0,0,380,599,0,0,380,599);
+
 	//	Establecemos los eventos necesarios para detectar 
 	//	cuando pulsamos y levantamos el dedo de una tecla
 
 	document.addEventListener("keydown", activarTeclaPulsada, false);
 	document.addEventListener("keyup", desactivarTeclaPulsada, false);
-	
-	//	Preparemos los componentes de la aplicación
-	prepararComponentesDeLaAplicacion();
+
+	cargarComponentesDeLaPagina();
 
 	canvas.focus();
 }
