@@ -15,6 +15,7 @@ window.onload = function() {
 	let radioButtonMedium;
 	let radioButtonYashin;
 	let tablaRecords;
+	let cancionFodo;
 
 	let timer;
 	let puckComeCocos;
@@ -622,6 +623,8 @@ window.onload = function() {
 		//	Obetner dificultad
 
 		dificulty = Dificulties.prototype.getSelectedDificulty();
+
+		cancionFodo.play();
 	}
 	/**
 	 * Este método se encarga de cerrar 
@@ -712,6 +715,8 @@ window.onload = function() {
 				alert("Intruzca un nombre para su usuario");
 			}
 		});
+
+		cancionFodo = document.getElementById("cancionFondo");
 	}
 
 
