@@ -19,6 +19,7 @@
         <script src="js/models/porteria/porteriaLocal.js"></script>
         <script src="js/models/porteria/porteriaVisitante.js"></script>
         <script src="js/main.js"></script>
+        <link rel="stylesheet" type="text/css" href="src/css/custom.css" title="style">
         <link rel="stylesheet" type="text/css" href="src/css/style.css" title="style">
         <link rel="shortcut icon" href="src/assets/logo.svg">
         <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;400;500&display=swap" rel="stylesheet">
@@ -34,7 +35,7 @@
                 
                 <div class="col-12 cabecera">
 
-                    <img width="100" height="100" src="src/assets/logo.svg">
+                    <img width="145" height="145" src="src/assets/logo.svg">
 
                 </div>
 
@@ -43,23 +44,27 @@
             <!--    CUERPO    -->
             <div class="row">
 
-                <div class="col-12">
+                <div class="col-12 cuerpo">
 
                     <!--    OPCIONES    -->
                     <div class="ml-1 col-3 opciones">
 
-                        <h2>OPCIONES</h2>
+                        <div class="row">
+                            <div class="col-12">
+                                <h2>OPCIONES</h2>
+                            </div>
+                        </div>
                         <hr>
 
                         <div class="row">
-                            <div class="mt-2 col-12">
+                            <div class="mt-2 ml-2 col-12">
                                 <label id="nickName">NickName</label>
                                 <input type="text" name="nickName" id="nickName" class="inputNickName" placeholder="nickName" required>
                             </div>
                         </div>
 
                         <div class="row">
-                            <div class="mt-2 col-6">
+                            <div class="ml-2 mt-2 col-6">
                                 <label id="dificulty">Dificultad</label>
                             </div>
                         </div>
@@ -82,7 +87,7 @@
                         </div>
 
                         <div class="row">
-                            <div class="ml-1 mt-2 col-6">
+                            <div class="ml-2 mt-2 col-5">
                                 <button id="buttonStartGame">START GAME</button>
                             </div>
                         </div>

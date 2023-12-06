@@ -642,11 +642,25 @@ window.onload = function() {
             tablaRecords.removeChild(tablaRecords.firstChild);
         }
 
-        for(let iterador = 1; iterador<=Records.listRecords.length; iterador++){
+		let liElements = [];
+        for(let iterador = 0; iterador<Records.listRecords.length; iterador++){
             let liElement = document.createElement("li");
-            liElement.textContent = `${iterador}. ${Records.listRecords[iterador-1].toStringRecord()}`;
-            tablaRecords.append(liElement);
+			let pElement = document.createElement("p");
+            pElement.textContent = `${iterador+1}. ${Records.listRecords[iterador].toStringRecord()}`;
+			if(iterador == 0){
+				pElement.setAttribute("class","primerPuesto");
+			}else if(iterador == 1){
+				pElement.setAttribute("class","segundoPuesto");
+			}else if(iterador == 2){
+				pElement.setAttribute("class","tercerPuesto");
+			}
+			liElement.appendChild(pElement);
+            liElements.push(liElement);
         }
+
+		liElements.forEach(function(liElement){
+			tablaRecords.appendChild(liElement);
+		});
     }
 
 
