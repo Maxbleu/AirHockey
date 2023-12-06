@@ -11,9 +11,11 @@ window.onload = function() {
 
 	let inputNickName;
 	let botonStartGame;
+
 	let radioButtonEassy;
 	let radioButtonMedium;
 	let radioButtonYashin;
+
 	let tablaRecords;
 	let cancionFodo;
 
@@ -28,58 +30,37 @@ window.onload = function() {
 	let marcadorVisitante;
 	let porteriaVisitante;
 
-	/**
-	 *      OBJETO DIFICULTIES
-	 * Este objeto manejará las diferentes 
-	 * dificultades del video juego
-	 */
-	function Dificulties(){}
-	Dificulties.prototype.DIFICULTADES = {
-		EASSY : 1,
-		MEDIUM : 2,
-		YASHIN : 3
-	};
-	Dificulties.prototype.getSelectedDificulty = function(){
-		if(radioButtonEassy.checked){
-			return Dificulties.prototype.DIFICULTADES.EASSY;
-		}
 
-		if(radioButtonMedium.checked){
-			return Dificulties.prototype.DIFICULTADES.MEDIUM;
-		}
+	//	DIFICULTADES
 
-		if(radioButtonYashin.checked){
-			return Dificulties.prototype.DIFICULTADES.YASHIN;
+	class Dificultades{
+
+		static listaDificultades = [
+			new Dificultad(1,"EASSY"),
+			new Dificultad(2,"MEDIUM"),
+			new Dificultad(3,"YASHIN")
+		];
+
+		static obtenerDificultadSeleccionada = function(){
+			if(radioButtonEassy.checked){
+				return this.listaDificultades[0];
+			}
+	
+			if(radioButtonMedium.checked){
+				return this.listaDificultades[1];
+			}
+	
+			if(radioButtonYashin.checked){
+				return this.listaDificultades[2];
+			}
+
+			return null;
 		}
 	}
-	Dificulties.prototype.userChooseDificulty = function(){
-		if(radioButtonEassy.checked){
-			return true;
-		}
 
-		if(radioButtonMedium.checked){
-			return true;
-		}
 
-		if(radioButtonYashin.checked){
-			return true;
-		}
-	}
-	Dificulties.prototype.getNameDificulty = function(dificultad){
-		let nameDificulty;
-		switch(dificultad){
-			case Dificulties.prototype.DIFICULTADES.EASSY:
-				nameDificulty = "EASSY";
-				break;
-			case Dificulties.prototype.DIFICULTADES.MEDIUM:
-				nameDificulty = "MEDIUM";
-				break;
-			case Dificulties.prototype.DIFICULTADES.YASHIN:
-				nameDificulty = "YASHIN";
-				break;
-		}
-		return nameDificulty;
-	}
+	//	TIMER
+
 	/**
 	 * Este objeto representa el 
 	 * tipo que pasa en la partida
@@ -97,9 +78,8 @@ window.onload = function() {
             }
 		}
 
-		this.toString = function(){
-			if(this.segundos<=9){this.segundos = "0" + this.segundos;}
-			return `${this.minutos}:${this.segundos}`;
+		this.obtenerTiempo = function(){
+			return new TiempoJugado(this.minutos,this.segundos);
 		}
 
 		this.show = function(){
@@ -110,7 +90,7 @@ window.onload = function() {
 
 			let minutosString = this.minutos.toString();
 			unidades = minutosString.split('');
-			if(unidades.length == 1){unidades.unshift(0);}
+			if(unidades.length === 1){unidades.unshift(0);}
 			unidades.forEach(function(value){
 				return parseInt(value);
 			});
@@ -257,6 +237,10 @@ window.onload = function() {
 			anchura: 19
 		}
 	];
+
+
+	//	PUCK
+
 	/**
 	 * 		OBJETO PUCKCOMECOCOS
 	 * Este objeto se encarga de gestionar todas 
@@ -365,6 +349,10 @@ window.onload = function() {
 	PuckComeCocos.prototype = new HockeyElement;
 	PuckComeCocos.prototype.ANIMACIONESCOMECOCOS = [[203,243],[235,243]];
 	PuckComeCocos.prototype.VELOCIDAD = 4;
+
+
+	//	STICKHOCKEY
+
 	/**
 	 * 		OBJETO STICKLOCAL
 	 * @param {number} _x 
@@ -428,13 +416,13 @@ window.onload = function() {
 
 			switch(dificulty){
 
-				case Dificulties.prototype.DIFICULTADES.EASSY:
+				case Dificultades.listaDificultades[0]:
 					break;
 
-				case Dificulties.prototype.DIFICULTADES.MEDIUM:
+				case Dificultades.listaDificultades[1]:
 					break;
 
-				case Dificulties.prototype.DIFICULTADES.YASHIN:
+				case Dificultades.listaDificultades[2]:
 					break;
 
 			}
@@ -459,6 +447,10 @@ window.onload = function() {
 		}
 	}
 	StickVisitante.prototype = StickHockey;
+
+
+	//	MARCADORES
+
 	/**
 	 * Este objeto representa el 
 	 * marcador del equipo local
@@ -607,6 +599,7 @@ window.onload = function() {
 	 * Este método se encarga de iniciar el funcionamiento del juego
 	 */
 	function startGame(){
+		
 		//	Lanzamos la animación
 		idAnimacionHockey = setInterval(gameLoop, 1000/50);
 		
@@ -621,9 +614,7 @@ window.onload = function() {
 		},1000);
 
 		//	Obetner dificultad
-
-		dificulty = Dificulties.prototype.getSelectedDificulty();
-
+		dificulty = Dificultades.obtenerDificultadSeleccionada();
 		cancionFodo.play();
 	}
 	/**
@@ -636,18 +627,27 @@ window.onload = function() {
 		clearInterval(idAnimacionHockey);
 		clearInterval(idAnimacionTimer);
 
-		//	Creamos el record para mostrarlo y 
-		//	almacenarlo en localStorage
-
-		let nameDificulty = Dificulties.prototype.getNameDificulty(dificulty);
-
-		let record = new Record(inputNickName.value,timer.toString(),dificulty,nameDificulty);
+		let record = new Record(inputNickName.value,timer.obtenerTiempo(),dificulty);
 		Records.saveRecordInList(record);
 
-		//	Mostrar en el panel de records
-		Records.showListRecords(tablaRecords);
+		actualizarListaDeRecords();
 
 	}
+	/**
+	 * Este método se encarga de 
+	 * recargar la tabla de records
+	 */
+	function actualizarListaDeRecords(){
+        while (tablaRecords.firstChild) {
+            tablaRecords.removeChild(tablaRecords.firstChild);
+        }
+
+        for(let iterador = 1; iterador<=Records.listRecords.length; iterador++){
+            let liElement = document.createElement("li");
+            liElement.textContent = `${iterador}. ${Records.listRecords[iterador-1].toStringRecord()}`;
+            tablaRecords.append(liElement);
+        }
+    }
 
 
 
@@ -694,7 +694,7 @@ window.onload = function() {
 
 		tablaRecords = document.getElementById("tablaRecords");
 
-		Records.showListRecords(tablaRecords);
+		actualizarListaDeRecords();
 
 		//	Preparemos los componentes de la aplicación
 		//	Preparación del evento que lanza el programa
@@ -704,8 +704,10 @@ window.onload = function() {
 		inputNickName = document.getElementsByClassName("inputNickName")[0];
 
 		botonStartGame.addEventListener("click", () =>{
+
 			if(inputNickName.value != ""){
-				if(Dificulties.prototype.userChooseDificulty()){
+
+				if(Dificultades.obtenerDificultadSeleccionada() != null){
 					prepararComponentesDeLaAplicacion();
 					startGame();
 				}else{
@@ -714,6 +716,7 @@ window.onload = function() {
 			}else{
 				alert("Intruzca un nombre para su usuario");
 			}
+
 		});
 
 		cancionFodo = document.getElementById("cancionFondo");
@@ -771,6 +774,7 @@ window.onload = function() {
 				break;
 		}
 	}
+
 
 
 	

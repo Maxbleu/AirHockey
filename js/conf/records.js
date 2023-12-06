@@ -17,11 +17,36 @@ class Records{
             this.listRecords.push(
                 new Record(
                     list[iterador].nombre,
-                    list[iterador].tiempo, 
-                    list[iterador].dificultad,
-                    list[iterador].nameDificultad
+                    new TiempoJugado(
+                        list[iterador].tiempoJugado.minutos,
+                        list[iterador].tiempoJugado.segundos
+                    ),
+                    new Dificultad(
+                        list[iterador].dificultad.valor,
+                        list[iterador].dificultad.nombre
+                        )
                     )
                 );
+        }
+    }
+
+    static ordenarPorDificultadYTiempo(record, siguienteRecord) {
+        let dificultadActual = record.dificultad.valor;
+        let dificultadOtro = siguienteRecord.dificultad.valor;
+
+        if (dificultadActual !== dificultadOtro) {
+
+            return dificultadActual - dificultadOtro;
+        
+        } else {
+
+            let diferenciaEnSegundos = siguienteRecord.tiempoJugado.minutos - record.tiempoJugado.minutos;
+            if(diferenciaEnSegundos !== 0){
+                return record.tiempoJugado.minutos - siguienteRecord.tiempoJugado.minutos;
+            }
+
+            return record.tiempoJugado.segundos - siguienteRecord.tiempoJugado.segundos;
+
         }
     }
 
@@ -30,27 +55,10 @@ class Records{
         //  Guardamos el record en la lista
         this.listRecords.push(record);
 
-		//	Ordenamos los records desde el de mayor dificultad a menos
-		this.listRecords.sort(function(record, nextRecord){
-			return nextRecord.dificultad - record.dificultad;
-		});
+		this.listRecords.sort(this.ordenarPorDificultadYTiempo);
 
         //  Guardamos los records en localStorage con el nuevo record guardado
         localStorage.setItem(this.KEYARRAYRECORDS, JSON.stringify(this.listRecords));
-    }
-
-    static showListRecords(tablaRecords){
-
-        while (tablaRecords.firstChild) {
-            tablaRecords.removeChild(tablaRecords.firstChild);
-        }
-
-        for(let iterador = 1; iterador<=this.listRecords.length; iterador++){
-            let liElement = document.createElement("li");
-            liElement.textContent = `${iterador}. ${this.listRecords[iterador-1].toStringRecord()}`;
-            tablaRecords.append(liElement);
-        }
-
     }
 
 }

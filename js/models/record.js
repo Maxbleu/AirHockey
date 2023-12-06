@@ -3,18 +3,16 @@
  * Este objeto representa un record el cual almacena 
  * la información tanto del usuario como de su partida
  * @param {string} _nombre 
- * @param {string} _tiempo 
- * @param {string} _dificultad 
- * @param {string} _nameDificultad
+ * @param {TiempoJugador} _tiempoJugado 
+ * @param {Dificultad} _dificultad 
  */
-function Record(_nombre, _tiempo, _dificultad, _nameDificultad){
+function Record(_nombre, _tiempoJugado, _dificultad){
 
     this.nombre = _nombre;
-    this.tiempo = _tiempo;
+    this.tiempoJugado = _tiempoJugado;
     this.dificultad = _dificultad;
-    this.nameDificultad = _nameDificultad;
 
 }
 Record.prototype.toStringRecord = function(){
-    return `${this.nombre} - ${this.tiempo} - ${this.nameDificultad}`;
+    return `${this.nombre} - ${this.tiempoJugado.toString()} - ${this.dificultad.nombre}`;
 }
