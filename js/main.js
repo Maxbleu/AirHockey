@@ -383,6 +383,23 @@ window.onload = function() {
 			}
 		}
 
+		this.mantenerStickLocalEnElCanvas = function(){
+			if(this.direccion != 0){
+				if(this.x < LIMITELADOIZQUIERDO){
+					this.x = LIMITELADOIZQUIERDO;
+				}
+				if(this.y < LIMITEMEDIOCAMPO){
+					this.y = LIMITEMEDIOCAMPO;
+				}
+				if(this.coordsLadoDerecho() > LIMITELADODERECHO){
+					this.x = 295;
+				}
+				if(this.coordsParteAbajo() > LIMITEABAJO){
+					this.y = 516;
+				}
+			}
+		}
+
 		this.show = function(){
 			ctx.drawImage
 					(
@@ -409,26 +426,34 @@ window.onload = function() {
 		this.base = StickHockey;
 		this.base(_x, _y);
 
-		this.direccion = 0;
-		
+		this.desplazamientoX = 0;
+		this.desplazamientoY = 0;
+
+		this.mantenerStickVisitanteEnElCanvas = function(){
+			if(this.direccion != 0){
+				if(this.y < LIMITEARRIBA){
+					this.y = LIMITEARRIBA;
+				}
+				if(this.x < LIMITELADOIZQUIERDO){
+					this.x = LIMITELADOIZQUIERDO;
+				}
+				if(this.coordsParteAbajo() > LIMITEMEDIOCAMPO){
+					this.y = 227;
+				}
+				if(this.coordsLadoDerecho() > LIMITELADODERECHO){
+					this.x = 295;
+				}
+			}
+		}
 
 		this.mover = function(){
 
-			switch(dificulty){
+			if(puckComeCocos.coordsParteAbajo() < LIMITEMEDIOCAMPO){
 
-				case Dificultades.listaDificultades[0]:
-					break;
-
-				case Dificultades.listaDificultades[1]:
-					break;
-
-				case Dificultades.listaDificultades[2]:
-					break;
+			}else{
 
 			}
-			// Mueve el stickVisitante en la dirección calculada
-			//this.x += velocidad * Math.cos(this.direccion);
-			//this.y += velocidad * Math.sin(this.direccion);
+
 		}
 
 		this.show = function(){
@@ -542,10 +567,10 @@ window.onload = function() {
 		puckComeCocos.mantenerPuckEnElCanvas();
 		puckComeCocos.mover();
 
-		stickLocal.mantenerStickEnElCanvas();
+		stickLocal.mantenerStickLocalEnElCanvas();
 		stickLocal.mover();
 
-		stickVisitante.mantenerStickEnElCanvas();
+		stickVisitante.mantenerStickVisitanteEnElCanvas();
 		stickVisitante.mover();
 
 		//	Comprobamos si el puck ha colisionado con el stick user
@@ -556,6 +581,8 @@ window.onload = function() {
 		//	Comprobamos si el puck ha colisionado con el stick IA
 		if(puckComeCocos.detectarColisionEntrePuckStick(stickVisitante)){
 			puckComeCocos.modificarDireccionDelPuck(stickVisitante);
+			stickVisitante.desplazamientoX = 0;
+			stickVisitante.desplazamientoY = 0;
 		}
 
 		//	Comprobamos si el disco ha entrado en la portería local
@@ -626,6 +653,8 @@ window.onload = function() {
 		clearInterval(idAnimacionAbrirCerrarBoca);
 		clearInterval(idAnimacionHockey);
 		clearInterval(idAnimacionTimer);
+
+		cancionFodo.pause();
 
 		let record = new Record(inputNickName.value,timer.obtenerTiempo(),dificulty);
 		Records.saveRecordInList(record);

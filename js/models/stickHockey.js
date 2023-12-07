@@ -10,22 +10,6 @@ function StickHockey(_x, _y){
     this.base = HockeyElement;
     this.base(_x, _y, 71, 71);
 
-    this.mantenerStickEnElCanvas = function(){
-        if(this.direccion != 0){
-            if(this.x < LIMITELADOIZQUIERDO){
-                this.x = LIMITELADOIZQUIERDO;
-            }
-            if(this.y < LIMITEMEDIOCAMPO){
-                this.y = LIMITEMEDIOCAMPO;
-            }
-            if(this.coordsLadoDerecho() > LIMITELADODERECHO){
-                this.x = 295;
-            }
-            if(this.coordsParteAbajo() > LIMITEABAJO){
-                this.y = 516;
-            }
-        }
-    }
 }
 StickHockey.prototype = new HockeyElement;
 StickHockey.prototype.SKINCOORDS = [100,111];
