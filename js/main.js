@@ -21,6 +21,7 @@ window.onload = function() {
 	let sonidoGol;
 	let sonidoVictoria;
 	let sonidoDerrota;
+	let cancionSecreta;
 
 	let timer;
 	let puckComeCocos;
@@ -802,6 +803,7 @@ window.onload = function() {
 		sonidoGol = document.getElementById("sonidoGol");
 		sonidoVictoria = document.getElementById("sonidoVictoria");
 		sonidoDerrota = document.getElementById("sonidoDerrota");
+		cancionSecreta = document.getElementById("cancionSecreta");
 		
 	}
 
@@ -813,6 +815,11 @@ window.onload = function() {
 	 * @param {event} event 
 	 */
 	function activarTeclaPulsada(event) {
+
+		if(event.shiftKey && event.key === 'Tab'){
+			cancionSecreta.play();
+		}
+
         switch (event.keyCode) {
 		
 			case MOVIMIENTOS.IZQUIERDA: 
@@ -830,6 +837,8 @@ window.onload = function() {
 			case MOVIMIENTOS.ABAJO:
 					stickLocal.abajo = true;
 				break;
+		
+			default:
 		}
 	}
 	/**
