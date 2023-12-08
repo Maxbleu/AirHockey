@@ -8,6 +8,7 @@ window.onload = function() {
 
 	let ctx;
 	let canvas;
+	let tablaRecords;
 
 	let inputNickName;
 	let botonStartGame;
@@ -16,8 +17,10 @@ window.onload = function() {
 	let radioButtonMedium;
 	let radioButtonYashin;
 
-	let tablaRecords;
-	let cancionFodo;
+	let sonidoPuck;
+	let sonidoGol;
+	let sonidoVictoria;
+	let sonidoDerrota;
 
 	let timer;
 	let puckComeCocos;
@@ -270,6 +273,7 @@ window.onload = function() {
 					if(this.haEntradoUnaParteEnLaPorteriaVisitante){
 						if(Math.floor(this.x) < Porteria.prototype.INICIOPORTERIA || Math.floor(this.coordsLadoDerecho()) > Porteria.prototype.FINPORTERIA){
 							this.direccion = Math.PI - this.direccion;
+							puckComeCocos.reproducirAudio();
 						}
 
 					}else if(Math.floor(this.x) <= Porteria.prototype.INICIOPORTERIA && Math.floor(this.x) >= 118 
@@ -277,29 +281,35 @@ window.onload = function() {
 							Math.floor(this.coordsLadoDerecho()) >= Porteria.prototype.FINPORTERIA && Math.floor(this.coordsLadoDerecho() <= 262)){
 
 						this.direccion = -this.direccion;
+						puckComeCocos.reproducirAudio();
 
 					}else if(Math.floor(this.x) < Porteria.prototype.INICIOPORTERIA || Math.floor(this.coordsLadoDerecho()) > Porteria.prototype.FINPORTERIA){
 						this.direccion = -this.direccion;
+						puckComeCocos.reproducirAudio();
 					}
 
 				}
 				if(Math.floor(this.x) < LIMITELADOIZQUIERDO || Math.floor(this.coordsLadoDerecho()) > LIMITELADODERECHO){
 					this.direccion = Math.PI - this.direccion;
+					puckComeCocos.reproducirAudio();
 				}
 				if(Math.floor(this.coordsParteAbajo()) > LIMITEABAJO){
 
 					if(this.haEntradoUnaParteEnLaPorteriaLocal){
 						if(Math.floor(this.x) < Porteria.prototype.INICIOPORTERIA || Math.floor(this.coordsLadoDerecho()) > Porteria.prototype.FINPORTERIA){
 							this.direccion = Math.PI - this.direccion;
+							puckComeCocos.reproducirAudio();
 						}
 					}else if(Math.floor(this.x) <= Porteria.prototype.INICIOPORTERIA && Math.floor(this.x) >= 118 
 							|| 
 							Math.floor(this.coordsLadoDerecho()) >= Porteria.prototype.FINPORTERIA && Math.floor(this.coordsLadoDerecho() <= 262)){
 
 						this.direccion = -this.direccion;
+						puckComeCocos.reproducirAudio();
 
 					}else if(Math.floor(this.x) < Porteria.prototype.INICIOPORTERIA || Math.floor(this.coordsLadoDerecho()) > Porteria.prototype.FINPORTERIA){
 						this.direccion = -this.direccion;
+						puckComeCocos.reproducirAudio();
 					}
 				}
 				
@@ -343,6 +353,13 @@ window.onload = function() {
 
 		this.modificarDireccionDelPuck = function(stick){
 			this.direccion = Math.atan2(this.ry() - stick.ry(), this.rx() - stick.rx());
+		}
+
+		this.reproducirAudio = function(){
+
+			sonidoPuck.play();
+			sonidoPuck.currentTime = 0;
+
 		}
 
 	}
@@ -576,42 +593,35 @@ window.onload = function() {
 		//	Comprobamos si el puck ha colisionado con el stick user
 		if(puckComeCocos.detectarColisionEntrePuckStick(stickLocal)){
 			puckComeCocos.modificarDireccionDelPuck(stickLocal);
+			puckComeCocos.reproducirAudio();
+
 		}
 
 		//	Comprobamos si el puck ha colisionado con el stick IA
 		if(puckComeCocos.detectarColisionEntrePuckStick(stickVisitante)){
 			puckComeCocos.modificarDireccionDelPuck(stickVisitante);
-			stickVisitante.desplazamientoX = 0;
-			stickVisitante.desplazamientoY = 0;
+			puckComeCocos.reproducirAudio();
 		}
 
 		//	Comprobamos si el disco ha entrado en la portería local
 		if(porteriaLocal.elDiscoHaEntrado(puckComeCocos)){
 			marcadorVisitante.anotarGolDelVisitante();
+			sonidoGol.play();
 			if(marcadorVisitante.haGanadoElEquipoVisitante()){
-				finishGame();
+				iaHaGanado();
 			}else{
-				puckComeCocos.volverALaPosicionInicial();
-				puckComeCocos.direccion = 0;
-				puckComeCocos.haEntradoUnaParteEnLaPorteriaLocal = false;
-				puckComeCocos.haEntradoUnaParteEnLaPorteriaVisitante = false;
-				stickLocal.volverALaPosicionInicial();
-				stickVisitante.volverALaPosicionInicial();
+				volverALasPosicionesIniciales();
 			}
 		}
 
 		//	Comprobamos si el disco ha entrado en la portería visitante
 		if(porteriaVisitante.elDiscoHaEntrado(puckComeCocos)){
 			marcadorLocal.anotarGolDelLocal();
+			sonidoGol.play();
 			if(marcadorLocal.haGanadoElEquipoLocal()){
-				finishGame();
+				usuarioHaGanado();
 			}else{
-				puckComeCocos.volverALaPosicionInicial();
-				puckComeCocos.direccion = 0;
-				puckComeCocos.haEntradoUnaParteEnLaPorteriaLocal = false;
-				puckComeCocos.haEntradoUnaParteEnLaPorteriaVisitante = false;
-				stickLocal.volverALaPosicionInicial();
-				stickVisitante.volverALaPosicionInicial();
+				volverALasPosicionesIniciales();
 			}
 		}
 
@@ -642,7 +652,6 @@ window.onload = function() {
 
 		//	Obetner dificultad
 		dificulty = Dificultades.obtenerDificultadSeleccionada();
-		cancionFodo.play();
 	}
 	/**
 	 * Este método se encarga de cerrar 
@@ -654,14 +663,41 @@ window.onload = function() {
 		clearInterval(idAnimacionHockey);
 		clearInterval(idAnimacionTimer);
 
-		cancionFodo.pause();
-
+	}
+	/**
+	 * Este método se encarga de volver devolver a los
+	 * objetos a sus posiciones inciales para volver a
+	 * jugar el siguiente punto
+	 */
+	function volverALasPosicionesIniciales(){
+		puckComeCocos.volverALaPosicionInicial();
+		puckComeCocos.direccion = 0;
+		puckComeCocos.haEntradoUnaParteEnLaPorteriaLocal = false;
+		puckComeCocos.haEntradoUnaParteEnLaPorteriaVisitante = false;
+		stickLocal.volverALaPosicionInicial();
+		stickVisitante.volverALaPosicionInicial();
+	}
+	/**
+	 * Este método realiza la funcionalidad
+	 * cuando gana el usuario la partida
+	 */
+	function usuarioHaGanado(){
+		finishGame();
+		sonidoVictoria.play();
 		let record = new Record(inputNickName.value,timer.obtenerTiempo(),dificulty);
 		Records.saveRecordInList(record);
-
 		actualizarListaDeRecords();
-
 	}
+	/**
+	 * Este método se encarga de la funcionalidad
+	 * cuando la ia gana la partida.
+	 */
+	function iaHaGanado(){
+		finishGame();
+		sonidoDerrota.play();
+	}
+
+
 	/**
 	 * Este método se encarga de 
 	 * recargar la tabla de records
@@ -762,7 +798,11 @@ window.onload = function() {
 
 		});
 
-		cancionFodo = document.getElementById("cancionFondo");
+		sonidoPuck = document.getElementById("sonidoPuck");
+		sonidoGol = document.getElementById("sonidoGol");
+		sonidoVictoria = document.getElementById("sonidoVictoria");
+		sonidoDerrota = document.getElementById("sonidoDerrota");
+		
 	}
 
 
