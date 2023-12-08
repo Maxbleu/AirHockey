@@ -319,8 +319,8 @@ window.onload = function() {
 
 		this.mover = function(){
 			if(this.direccion != 0){
-				this.x += this.VELOCIDAD * Math.cos(this.direccion);
-				this.y += this.VELOCIDAD * Math.sin(this.direccion);
+				this.x += this.VELOCIDADPUCK * Math.cos(this.direccion);
+				this.y += this.VELOCIDADPUCK * Math.sin(this.direccion);
 			}
 		}
 
@@ -366,7 +366,7 @@ window.onload = function() {
 	}
 	PuckComeCocos.prototype = new HockeyElement;
 	PuckComeCocos.prototype.ANIMACIONESCOMECOCOS = [[203,243],[235,243]];
-	PuckComeCocos.prototype.VELOCIDAD = 4;
+	PuckComeCocos.prototype.VELOCIDADPUCK = 4;
 
 
 	//	STICKHOCKEY
@@ -388,16 +388,16 @@ window.onload = function() {
 
 		this.mover = function(){
 			if(this.izquierda){
-				this.x -= StickHockey.prototype.VELOCIDAD;
+				this.x -= this.VELOCIDADSTICKHOCKEYLOCAL;
 			}
 			if(this.arriba){
-				this.y -= StickHockey.prototype.VELOCIDAD;
+				this.y -= this.VELOCIDADSTICKHOCKEYLOCAL;
 			}
 			if(this.derecha){
-				this.x += StickHockey.prototype.VELOCIDAD;
+				this.x += this.VELOCIDADSTICKHOCKEYLOCAL;
 			}
 			if(this.abajo){
-				this.y += StickHockey.prototype.VELOCIDAD;
+				this.y += this.VELOCIDADSTICKHOCKEYLOCAL;
 			}
 		}
 
@@ -434,18 +434,18 @@ window.onload = function() {
 		}
 	}
 	StickLocal.prototype = StickHockey;
+	StickLocal.prototype.VELOCIDADSTICKHOCKEYLOCAL = 3;
 	/**
 	 * 		OBJETO STICKVISITANTE
 	 * @param {number} _x 
 	 * @param {number} _y 
 	 */
-	function StickVisitante(_x, _y){
+	function StickVisitante(_x, _y, _velocidad){
 
 		this.base = StickHockey;
 		this.base(_x, _y);
 
-		this.desplazamientoX = 0;
-		this.desplazamientoY = 0;
+		this.velocidad = _velocidad;
 
 		this.mantenerStickVisitanteEnElCanvas = function(){
 			if(this.direccion != 0){
@@ -466,9 +466,33 @@ window.onload = function() {
 
 		this.mover = function(){
 
-			if(puckComeCocos.coordsParteAbajo() < LIMITEMEDIOCAMPO){
+			if (puckComeCocos.y < LIMITEMEDIOCAMPO) {
 
-			}else{
+				if ((puckComeCocos.y + puckComeCocos.radio()) < this.y) {
+					this.y -= this.velocidad;
+				} else {
+					this.y += this.velocidad;
+				}
+			
+				if ((puckComeCocos.x + puckComeCocos.radio()+6) < this.x) {
+					this.x -= this.velocidad;
+				} else if (puckComeCocos.x > (this.x + this.radio())) {
+					this.x += this.velocidad;
+				}
+			
+			} else {
+				
+				if(this.x > this.posicionInicalEnX){
+					this.x -= this.velocidad;
+				}else if(this.x < this.posicionInicalEnX){
+					this.x += this.velocidad;
+				}
+
+				if(this.y > this.posicionInicalEnY){
+					this.y -= this.velocidad;
+				}else if(this.y < this.posicionInicalEnY){
+					this.y += this.velocidad;
+				}
 
 			}
 
@@ -595,7 +619,6 @@ window.onload = function() {
 		if(puckComeCocos.detectarColisionEntrePuckStick(stickLocal)){
 			puckComeCocos.modificarDireccionDelPuck(stickLocal);
 			puckComeCocos.reproducirAudio();
-
 		}
 
 		//	Comprobamos si el puck ha colisionado con el stick IA
@@ -650,9 +673,6 @@ window.onload = function() {
 		idAnimacionTimer = setInterval(function(){
 			timer.actualizarTiempo()
 		},1000);
-
-		//	Obetner dificultad
-		dificulty = Dificultades.obtenerDificultadSeleccionada();
 	}
 	/**
 	 * Este método se encarga de cerrar 
@@ -663,6 +683,8 @@ window.onload = function() {
 		clearInterval(idAnimacionAbrirCerrarBoca);
 		clearInterval(idAnimacionHockey);
 		clearInterval(idAnimacionTimer);
+
+		buttonStartGame.disabled = false;
 
 	}
 	/**
@@ -743,8 +765,12 @@ window.onload = function() {
 		puckComeCocos = new PuckComeCocos(176,288);
 
 		//	Sticks
-		stickLocal = new StickLocal(155,500);
-		stickVisitante = new StickVisitante(155,40);
+		stickLocal = new StickLocal(176,500);
+
+		//	Obetner dificultad
+		dificulty = Dificultades.obtenerDificultadSeleccionada();
+
+		stickVisitante = new StickVisitante(176,41,dificulty.obtenerVelocidadIA());
 
 		//	Porterias
 		porteriaLocal = new PorteriaLocal();
@@ -788,11 +814,13 @@ window.onload = function() {
 			if(inputNickName.value != ""){
 
 				if(Dificultades.obtenerDificultadSeleccionada() != null){
+					buttonStartGame.disabled = true;
 					prepararComponentesDeLaAplicacion();
 					startGame();
 				}else{
 					alert("Seleccione la dificultad de su partida");
 				}
+
 			}else{
 				alert("Intruzca un nombre para su usuario");
 			}

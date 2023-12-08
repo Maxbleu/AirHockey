@@ -13,4 +13,3 @@ function StickHockey(_x, _y){
 }
 StickHockey.prototype = new HockeyElement;
 StickHockey.prototype.SKINCOORDS = [100,111];
-StickHockey.prototype.VELOCIDAD = 3;

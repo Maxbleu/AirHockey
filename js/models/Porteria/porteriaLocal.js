@@ -15,6 +15,8 @@ function PorteriaLocal(){
             }else{
                 if(puck.coordsParteAbajo() > this.LINEADEGOL){
                     puck.haEntradoUnaParteEnLaPorteriaLocal = true;
+                }else{
+                    puck.haEntradoUnaParteEnLaPorteriaLocal = false;
                 }
             }
         }

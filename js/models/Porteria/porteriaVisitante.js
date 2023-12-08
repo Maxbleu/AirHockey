@@ -15,6 +15,8 @@ function PorteriaVisitante(){
             }else{
                 if(puck.y < this.LINEADEGOL){
                     puck.haEntradoUnaParteEnLaPorteriaVisitante = true;
+                }else{
+                    puck.haEntradoUnaParteEnLaPorteriaVisitante = false;
                 }
             }
         }
