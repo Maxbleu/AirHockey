@@ -36,7 +36,7 @@ class Records{
 
         if (dificultadActual !== dificultadOtro) {
 
-            return dificultadActual - dificultadOtro;
+            return dificultadOtro - dificultadActual;
         
         } else {
 

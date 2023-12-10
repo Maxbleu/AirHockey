@@ -313,7 +313,9 @@ window.onload = function() {
 						puckComeCocos.reproducirAudio();
 					}
 				}
-				
+				if(Math.floor(this.coordsParteAbajo() > LIMITEMEDIOCAMPO)){
+					stickVisitante.cantidadDeContactosConDiscoCadaVezQueEntraASuCampo = 0;
+				}
 			}
 		}
 
@@ -447,6 +449,8 @@ window.onload = function() {
 
 		this.velocidad = _velocidad;
 
+		this.cantidadDeContactosConDiscoCadaVezQueEntraASuCampo = 0;
+
 		this.mantenerStickVisitanteEnElCanvas = function(){
 			if(this.direccion != 0){
 				if(this.y < LIMITEARRIBA){
@@ -468,16 +472,32 @@ window.onload = function() {
 
 			if (puckComeCocos.y < LIMITEMEDIOCAMPO) {
 
-				if ((puckComeCocos.y + puckComeCocos.radio()) < this.y) {
-					this.y -= this.velocidad;
+				if(this.cantidadDeContactosConDiscoCadaVezQueEntraASuCampo < 2){
+					if ((puckComeCocos.x + puckComeCocos.radio()+6) < this.x) {
+						this.x -= this.velocidad;
+					} else if (puckComeCocos.x > (this.x + this.radio())) {
+						this.x += this.velocidad;
+					}
+	
+					if ((puckComeCocos.y + puckComeCocos.radio()) < this.y) {
+						this.y -= this.velocidad;
+					} else {
+						this.y += this.velocidad;
+					}
 				} else {
-					this.y += this.velocidad;
-				}
-			
-				if ((puckComeCocos.x + puckComeCocos.radio()+6) < this.x) {
-					this.x -= this.velocidad;
-				} else if (puckComeCocos.x > (this.x + this.radio())) {
-					this.x += this.velocidad;
+				
+					if(this.x > this.posicionInicalEnX){
+						this.x -= this.velocidad;
+					}else if(this.x < this.posicionInicalEnX){
+						this.x += this.velocidad;
+					}
+	
+					if(this.y > this.posicionInicalEnY){
+						this.y -= this.velocidad;
+					}else if(this.y < this.posicionInicalEnY){
+						this.y += this.velocidad;
+					}
+	
 				}
 			
 			} else {
@@ -625,6 +645,7 @@ window.onload = function() {
 		if(puckComeCocos.detectarColisionEntrePuckStick(stickVisitante)){
 			puckComeCocos.modificarDireccionDelPuck(stickVisitante);
 			puckComeCocos.reproducirAudio();
+			stickVisitante.cantidadDeContactosConDiscoCadaVezQueEntraASuCampo++;
 		}
 
 		//	Comprobamos si el disco ha entrado en la portería local

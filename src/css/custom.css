@@ -153,23 +153,21 @@ li{
     border: none;
     padding: .5rem 0;
     color: var(--colorTexto);
-    transition: all .15s ease-in-out;
-}
-
-.radio-inputs .radio input:checked + .name {
-    font-weight: 600;
 }
 
 #spanInputEassy:hover, input:checked + #spanInputEassy{
     background-color: #558e3e;
+    font-weight: 600;
 }
 
 #spanInputMedium:hover, input:checked + #spanInputMedium{
-    background-color: #bbb93c;
+    background-color: #969300;
+    font-weight: 600;
 }
 
 #spanInputYashin:hover, input:checked + #spanInputYashin{
     background-color: #ff0000;
+    font-weight: 600;
 }
 
 .records, .opciones, .footer{
