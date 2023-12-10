@@ -193,7 +193,6 @@ li{
 #miCanvas{
     border: 2px;
     border-radius: 30px;
-    margin-left: 75px;
 }
 
 #nickName, #dificulty{
@@ -213,3 +212,91 @@ li{
 	background: transparent;
 	padding: .4em;
 }
+
+h1{
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    color: rgb(199, 199, 199);
+}
+
+.hoverH1{
+    text-shadow: 2px 2px 2px white;
+    cursor: pointer;
+}
+
+
+h4{
+    color: rgb(199, 199, 199);
+}
+
+.ver{
+    display: block;
+}
+
+.no-ver{
+    display: none;
+}
+
+
+
+.card {
+    position: relative;
+    width: 380px;
+    color: white;
+    height: 598px;
+    background: transparent;
+    border-radius: 30px;
+  }
+  
+  .bg {
+    position: absolute;
+    z-index: -1;
+    inset: -4px;
+    border-radius: 16px;
+    overflow: hidden;
+  }
+  
+  .uwu {
+    filter: blur(8px);
+    transition: filter 0.3s;
+  }
+  
+  .bg::before {
+    content: '';
+    position: absolute;
+    aspect-ratio: 1/1;
+    top: 50%;
+    left: 50%;
+    min-width: 150%;
+    min-height: 150%;
+    background-image: conic-gradient(
+      hsl(0, 100%, 50%),
+      hsl(30, 100%, 50%),
+      hsl(60, 100%, 50%),
+      hsl(90, 100%, 50%),
+      hsl(120, 100%, 50%),
+      hsl(150, 100%, 50%),
+      hsl(180, 100%, 50%),
+      hsl(210, 100%, 50%),
+      hsl(240, 100%, 60%),
+      hsl(270, 100%, 50%),
+      hsl(300, 100%, 50%),
+      hsl(330, 100%, 50%),
+      hsl(360, 100%, 50%)
+    );
+    animation: speeen 4s linear infinite;
+    transform-origin: 0% 0%;
+    transform: rotate(0deg) translate(-50%, -50%);
+  }
+  
+  @keyframes speeen {
+    from {
+      transform: rotate(0deg) translate(-50%, -50%);
+    }
+  
+    to {
+      transform: rotate(360deg) translate(-50%, -50%);
+    }
+  }
+  

@@ -3,6 +3,7 @@ window.onload = function() {
 	let idAnimacionHockey;
 	let idAnimacionAbrirCerrarBoca;
 	let idAnimacionTimer;
+	let idModoFiesta;
 
 	let dificulty;
 
@@ -12,6 +13,9 @@ window.onload = function() {
 
 	let inputNickName;
 	let botonStartGame;
+	let tituloMasInformacion;
+	let textoInformativoMF;
+	let card;
 
 	let radioButtonEassy;
 	let radioButtonMedium;
@@ -270,32 +274,32 @@ window.onload = function() {
 		this.mantenerPuckEnElCanvas = function(){
 			if(this.direccion != 0){
 				if(Math.floor(this.y) < LIMITEARRIBA) {
-
+	
 					if(this.haEntradoUnaParteEnLaPorteriaVisitante){
 						if(Math.floor(this.x) < Porteria.prototype.INICIOPORTERIA || Math.floor(this.coordsLadoDerecho()) > Porteria.prototype.FINPORTERIA){
 							this.direccion = Math.PI - this.direccion;
 							puckComeCocos.reproducirAudio();
 						}
-
+	
 					}else if(Math.floor(this.x) <= Porteria.prototype.INICIOPORTERIA && Math.floor(this.x) >= 118 
 							|| 
 							Math.floor(this.coordsLadoDerecho()) >= Porteria.prototype.FINPORTERIA && Math.floor(this.coordsLadoDerecho() <= 262)){
-
+	
 						this.direccion = -this.direccion;
 						puckComeCocos.reproducirAudio();
-
+	
 					}else if(Math.floor(this.x) < Porteria.prototype.INICIOPORTERIA || Math.floor(this.coordsLadoDerecho()) > Porteria.prototype.FINPORTERIA){
 						this.direccion = -this.direccion;
 						puckComeCocos.reproducirAudio();
 					}
-
+	
 				}
 				if(Math.floor(this.x) < LIMITELADOIZQUIERDO || Math.floor(this.coordsLadoDerecho()) > LIMITELADODERECHO){
 					this.direccion = Math.PI - this.direccion;
 					puckComeCocos.reproducirAudio();
 				}
 				if(Math.floor(this.coordsParteAbajo()) > LIMITEABAJO){
-
+	
 					if(this.haEntradoUnaParteEnLaPorteriaLocal){
 						if(Math.floor(this.x) < Porteria.prototype.INICIOPORTERIA || Math.floor(this.coordsLadoDerecho()) > Porteria.prototype.FINPORTERIA){
 							this.direccion = Math.PI - this.direccion;
@@ -304,10 +308,10 @@ window.onload = function() {
 					}else if(Math.floor(this.x) <= Porteria.prototype.INICIOPORTERIA && Math.floor(this.x) >= 118 
 							|| 
 							Math.floor(this.coordsLadoDerecho()) >= Porteria.prototype.FINPORTERIA && Math.floor(this.coordsLadoDerecho() <= 262)){
-
+	
 						this.direccion = -this.direccion;
 						puckComeCocos.reproducirAudio();
-
+	
 					}else if(Math.floor(this.x) < Porteria.prototype.INICIOPORTERIA || Math.floor(this.coordsLadoDerecho()) > Porteria.prototype.FINPORTERIA){
 						this.direccion = -this.direccion;
 						puckComeCocos.reproducirAudio();
@@ -853,6 +857,20 @@ window.onload = function() {
 		sonidoVictoria = document.getElementById("sonidoVictoria");
 		sonidoDerrota = document.getElementById("sonidoDerrota");
 		cancionSecreta = document.getElementById("cancionSecreta");
+
+		tituloMasInformacion = document.getElementById("tituloMasInformacion");
+		textoInformativoMF = document.getElementById("textoInformativoMF");
+		card = document.getElementById("card");
+
+		tituloMasInformacion.addEventListener("mouseenter", function(){
+			textoInformativoMF.classList.remove("no-ver");
+			tituloMasInformacion.classList.add("hoverH1");
+		});
+
+		tituloMasInformacion.addEventListener('mouseleave', function() {
+			textoInformativoMF.classList.add("no-ver");
+			tituloMasInformacion.classList.remove("hoverH1");
+		});
 		
 	}
 
@@ -863,10 +881,15 @@ window.onload = function() {
 	 * la tecla que ha pulsado el usuario
 	 * @param {event} event 
 	 */
-	function activarTeclaPulsada(event) {
+	function activarTeclaPulsada(event) {	
 
 		if(event.shiftKey && event.key === 'Tab'){
 			cancionSecreta.play();
+			card.firstElementChild.classList.add("bg");
+			idModoFiesta = setTimeout(function() {
+				card.firstElementChild.classList.remove("bg");
+				clearTimeout(idModoFiesta);
+			},82000);
 		}
 
         switch (event.keyCode) {

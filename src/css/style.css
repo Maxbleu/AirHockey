@@ -26,6 +26,10 @@
     margin-left: var(--pcolumna);
 }
 
+.mr-1{
+    margin-right: var(--pcolumna);
+}
+
 .ml-2{
     margin-left: calc(var(--pcolumna) * 2);
 }
@@ -34,10 +38,21 @@
     margin-top: var(--pcolumna);
 }
 
+.mb-1{
+    margin-bottom: var(--pcolumna);
+}
+
 .mt-2{
     margin-top: calc(var(--pcolumna) * 2);
 }
 
+.mt-3{
+    margin-top: calc(var(--pcolumna) * 3);
+}
+
+.mt-4{
+    margin-top: calc(var(--pcolumna) * 4);
+}
 
 .col-2{
     width: calc(var(--pcolumna) * 2);
