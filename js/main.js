@@ -78,112 +78,109 @@ window.onload = function() {
 		this.segundos = 0;
 		this.minutos = 0;
 
-		this.actualizarTiempo = function(){
-			this.segundos++;
-            if (this.segundos === 60) {
-                this.minutos++;
-                this.segundos = 0;
-            }
+	}
+	Timer.prototype.obtenerTiempo = function(){
+		return new TiempoJugado(this.minutos,this.segundos);
+	}
+	Timer.prototype.actualizarTiempo = function(){
+		this.segundos++;
+		if (this.segundos === 60) {
+			this.minutos++;
+			this.segundos = 0;
 		}
+	}
+	Timer.prototype.showTimer = function(){
 
-		this.obtenerTiempo = function(){
-			return new TiempoJugado(this.minutos,this.segundos);
-		}
+		let unidades = [];
 
-		this.show = function(){
+		//	MINUTOS
 
-			let unidades = [];
+		let minutosString = this.minutos.toString();
+		unidades = minutosString.split('');
+		if(unidades.length === 1){unidades.unshift(0);}
+		unidades.forEach(function(value){
+			return parseInt(value);
+		});
 
-			//	MINUTOS
+		//	PRIMER NÚMERO MINUTOS
+		ctx.drawImage
+				(
+					HOCKEYASSETS,
+					this.NUMEROS[unidades[0]].SKINCOORDS[0],
+					this.NUMEROS[unidades[0]].SKINCOORDS[1],
+					this.NUMEROS[unidades[0]].anchura,
+					this.NUMEROS[unidades[0]].altura,
+					18,
+					16,
+					this.NUMEROS[unidades[0]].anchura,
+					this.NUMEROS[unidades[0]].altura
+				);
 
-			let minutosString = this.minutos.toString();
-			unidades = minutosString.split('');
-			if(unidades.length === 1){unidades.unshift(0);}
-			unidades.forEach(function(value){
-				return parseInt(value);
-			});
+		//	SEGUNDO NÚMERO MINUTOS
+		ctx.drawImage
+				(
+					HOCKEYASSETS,
+					this.NUMEROS[unidades[1]].SKINCOORDS[0],
+					this.NUMEROS[unidades[1]].SKINCOORDS[1],
+					this.NUMEROS[unidades[1]].anchura,
+					this.NUMEROS[unidades[1]].altura,
+					39,
+					16,
+					this.NUMEROS[unidades[1]].anchura,
+					this.NUMEROS[unidades[1]].altura
+				);
 
-			//	PRIMER NÚMERO MINUTOS
-			ctx.drawImage
-					(
-						HOCKEYASSETS,
-						this.NUMEROS[unidades[0]].SKINCOORDS[0],
-						this.NUMEROS[unidades[0]].SKINCOORDS[1],
-						this.NUMEROS[unidades[0]].anchura,
-						this.NUMEROS[unidades[0]].altura,
-						18,
-						16,
-						this.NUMEROS[unidades[0]].anchura,
-						this.NUMEROS[unidades[0]].altura
-					);
+		//	DOS PUNTOS
+		ctx.drawImage
+				(
+					HOCKEYASSETS,
+					this.DOSPUNTOS.SKINCOORDS[0],
+					this.DOSPUNTOS.SKINCOORDS[1],
+					this.DOSPUNTOS.anchura,
+					this.DOSPUNTOS.altura,
+					this.DOSPUNTOS.x,
+					this.DOSPUNTOS.y,
+					this.DOSPUNTOS.anchura,
+					this.DOSPUNTOS.altura
+				);
 
-			//	SEGUNDO NÚMERO MINUTOS
-			ctx.drawImage
-					(
-						HOCKEYASSETS,
-						this.NUMEROS[unidades[1]].SKINCOORDS[0],
-						this.NUMEROS[unidades[1]].SKINCOORDS[1],
-						this.NUMEROS[unidades[1]].anchura,
-						this.NUMEROS[unidades[1]].altura,
-						39,
-						16,
-						this.NUMEROS[unidades[1]].anchura,
-						this.NUMEROS[unidades[1]].altura
-					);
+		//	SEGUNDOS
+		
+		unidades = [];
+		let segundosString = this.segundos.toString();
+		unidades = segundosString.split('');
+		if(unidades.length == 1){unidades.unshift(0);}
+		unidades.forEach(function(value){
+			return parseInt(value);
+		});
 
-			//	DOS PUNTOS
-			ctx.drawImage
-					(
-						HOCKEYASSETS,
-						this.DOSPUNTOS.SKINCOORDS[0],
-						this.DOSPUNTOS.SKINCOORDS[1],
-						this.DOSPUNTOS.anchura,
-						this.DOSPUNTOS.altura,
-						this.DOSPUNTOS.x,
-						this.DOSPUNTOS.y,
-						this.DOSPUNTOS.anchura,
-						this.DOSPUNTOS.altura
-					);
+		//	PRIMER NÚMERO SEGUNDOS
+		ctx.drawImage
+				(
+					HOCKEYASSETS,
+					this.NUMEROS[unidades[0]].SKINCOORDS[0],
+					this.NUMEROS[unidades[0]].SKINCOORDS[1],
+					this.NUMEROS[unidades[0]].anchura,
+					this.NUMEROS[unidades[0]].altura,
+					66,
+					16,
+					this.NUMEROS[unidades[0]].anchura,
+					this.NUMEROS[unidades[0]].altura
+				);
 
-			//	SEGUNDOS
-			
-			unidades = [];
-			let segundosString = this.segundos.toString();
-			unidades = segundosString.split('');
-			if(unidades.length == 1){unidades.unshift(0);}
-			unidades.forEach(function(value){
-				return parseInt(value);
-			});
-
-			//	PRIMER NÚMERO SEGUNDOS
-			ctx.drawImage
-					(
-						HOCKEYASSETS,
-						this.NUMEROS[unidades[0]].SKINCOORDS[0],
-						this.NUMEROS[unidades[0]].SKINCOORDS[1],
-						this.NUMEROS[unidades[0]].anchura,
-						this.NUMEROS[unidades[0]].altura,
-						66,
-						16,
-						this.NUMEROS[unidades[0]].anchura,
-						this.NUMEROS[unidades[0]].altura
-					);
-
-			//	SEGUNDO NÚMERO SEGUNDOS
-			ctx.drawImage
-					(
-						HOCKEYASSETS,
-						this.NUMEROS[unidades[1]].SKINCOORDS[0],
-						this.NUMEROS[unidades[1]].SKINCOORDS[1],
-						this.NUMEROS[unidades[1]].anchura,
-						this.NUMEROS[unidades[1]].altura,
-						87,
-						16,
-						this.NUMEROS[unidades[1]].anchura,
-						this.NUMEROS[unidades[1]].altura
-					);
-		}
-
+		//	SEGUNDO NÚMERO SEGUNDOS
+		ctx.drawImage
+				(
+					HOCKEYASSETS,
+					this.NUMEROS[unidades[1]].SKINCOORDS[0],
+					this.NUMEROS[unidades[1]].SKINCOORDS[1],
+					this.NUMEROS[unidades[1]].anchura,
+					this.NUMEROS[unidades[1]].altura,
+					87,
+					16,
+					this.NUMEROS[unidades[1]].anchura,
+					this.NUMEROS[unidades[1]].altura
+				);
 	}
 	Timer.prototype.DOSPUNTOS = {
 		SKINCOORDS : [339,50],
@@ -249,29 +246,33 @@ window.onload = function() {
 
 	//	PUCK
 
-	/**
-	 * 		OBJETO PUCKCOMECOCOS
-	 * Este objeto se encarga de gestionar todas 
-	 * las acciones del objeto PuckComeCocos
-	 * @param {number} _x 
-	 * @param {number} _y
-	 */
-	function PuckComeCocos(_x, _y){
+	class PuckComeCocos extends HockeyElement {
 
-		this.base = HockeyElement;
-		this.base(_x, _y, 30, 30);
+		ANIMACIONESCOMECOCOS = [[203,243],[235,243]];
+		VELOCIDADPUCK = 4;
+	
+		/**
+		 * 		OBJETO PUCKCOMECOCOS
+		 * Este objeto se encarga de gestionar todas 
+		 * las acciones del objeto PuckComeCocos
+		 * @param {number} _x 
+		 * @param {number} _y
+		 */
+		constructor(_x, _y){
+			
+			super(_x, _y, 30, 30);
+			this.direccion = 0;
+			this.posicionAnimacionComecocos = 0;
+			this.haEntradoUnaParteEnLaPorteriaLocal = false;
+			this.haEntradoUnaParteEnLaPorteriaVisitante = false;
 
-		this.direccion = 0;
-		this.posicionAnimacionComecocos = 0;
-		this.haEntradoUnaParteEnLaPorteriaLocal = false;
-		this.haEntradoUnaParteEnLaPorteriaVisitante = false;
+		}
 
-
-		this.abrirCierraBoca = function(){
+		abrirCierraBoca(){
 			this.posicionAnimacionComecocos = (this.posicionAnimacionComecocos + 1) % 2;
 		}
 
-		this.mantenerPuckEnElCanvas = function(){
+		mantenerPuckEnElCanvas(){
 			if(this.direccion != 0){
 				if(Math.floor(this.y) < LIMITEARRIBA) {
 	
@@ -323,27 +324,27 @@ window.onload = function() {
 			}
 		}
 
-		this.mover = function(){
+		moverPuck(){
 			if(this.direccion != 0){
 				this.x += this.VELOCIDADPUCK * Math.cos(this.direccion);
 				this.y += this.VELOCIDADPUCK * Math.sin(this.direccion);
 			}
 		}
 
-		this.detectarColisionEntrePuckStick = function(stick){
+		detectarColisionEntrePuckStick(stick){
 			let distanciaX = Math.floor(Math.pow((stick.rx() - this.rx()),2));
 			let distanciaY = Math.floor(Math.pow((stick.ry() - this.ry()),2));
-
+	
 			let distanciaEntreElementos = Math.sqrt(distanciaX + distanciaY);
 			let sumaRadiosPuckyStick = stick.radio() + puckComeCocos.radio();
-
+	
 			if (distanciaEntreElementos<sumaRadiosPuckyStick) {
 				return true;
 			}
 			return false;
 		}
 
-		this.show = function(){
+		showPuck(){
 			ctx.drawImage
 				(
 					HOCKEYASSETS,
@@ -358,41 +359,41 @@ window.onload = function() {
 				);
 		}
 
-		this.modificarDireccionDelPuck = function(stick){
+		modificarDireccionDelPuck(stick){
 			this.direccion = Math.atan2(this.ry() - stick.ry(), this.rx() - stick.rx());
 		}
 
-		this.reproducirAudio = function(){
+		reproducirAudio(){
 
 			sonidoPuck.play();
 			sonidoPuck.currentTime = 0;
-
+	
 		}
-
+	
 	}
-	PuckComeCocos.prototype = new HockeyElement;
-	PuckComeCocos.prototype.ANIMACIONESCOMECOCOS = [[203,243],[235,243]];
-	PuckComeCocos.prototype.VELOCIDADPUCK = 4;
 
 
 	//	STICKHOCKEY
 
-	/**
-	 * 		OBJETO STICKLOCAL
-	 * @param {number} _x 
-	 * @param {number} _y 
-	 */
-	function StickLocal(_x, _y){
+	class StickLocal extends StickHockey{
 
-		this.base = StickHockey;
-		this.base(_x, _y);
+		VELOCIDADSTICKHOCKEYLOCAL = 3;
 
-		this.arriba = false;
-		this.abajo = false;
-		this.izquierda = false;
-		this.derecha = false;
+		/**
+		 * 		OBJETO STICKLOCAL
+		 * @param {number} _x 
+		 * @param {number} _y 
+		 */
+		constructor(_x, _y){
+			super(_x, _y);
 
-		this.mover = function(){
+			this.arriba = false;
+			this.abajo = false;
+			this.izquierda = false;
+			this.derecha = false;
+		}
+
+		moverStickLocal(){
 			if(this.izquierda){
 				this.x -= this.VELOCIDADSTICKHOCKEYLOCAL;
 			}
@@ -407,7 +408,7 @@ window.onload = function() {
 			}
 		}
 
-		this.mantenerStickLocalEnElCanvas = function(){
+		mantenerStickLocalEnElCanvas(){
 			if(this.direccion != 0){
 				if(this.x < LIMITELADOIZQUIERDO){
 					this.x = LIMITELADOIZQUIERDO;
@@ -424,12 +425,12 @@ window.onload = function() {
 			}
 		}
 
-		this.show = function(){
+		showStickLocal(){
 			ctx.drawImage
 					(
 						HOCKEYASSETS,
-						this.prototype.SKINCOORDS[0],
-						this.prototype.SKINCOORDS[1],
+						this.SKINCOORDS[0],
+						this.SKINCOORDS[1],
 						this.anchura,
 						this.altura,
 						this.x,
@@ -438,44 +439,27 @@ window.onload = function() {
 						this.altura
 					);
 		}
+
 	}
-	StickLocal.prototype = StickHockey;
-	StickLocal.prototype.VELOCIDADSTICKHOCKEYLOCAL = 3;
-	/**
-	 * 		OBJETO STICKVISITANTE
-	 * @param {number} _x 
-	 * @param {number} _y 
-	 */
-	function StickVisitante(_x, _y, _velocidad){
 
-		this.base = StickHockey;
-		this.base(_x, _y);
 
-		this.velocidad = _velocidad;
+	class StickVisitante extends StickHockey {
 
-		this.cantidadDeContactosConDiscoCadaVezQueEntraASuCampo = 0;
-
-		this.mantenerStickVisitanteEnElCanvas = function(){
-			if(this.direccion != 0){
-				if(this.y < LIMITEARRIBA){
-					this.y = LIMITEARRIBA;
-				}
-				if(this.x < LIMITELADOIZQUIERDO){
-					this.x = LIMITELADOIZQUIERDO;
-				}
-				if(this.coordsParteAbajo() > LIMITEMEDIOCAMPO){
-					this.y = 227;
-				}
-				if(this.coordsLadoDerecho() > LIMITELADODERECHO){
-					this.x = 295;
-				}
-			}
+		/**
+		 * 		OBJETO STICKVISITANTE
+		 * @param {number} _x 
+		 * @param {number} _y 
+		 */
+		constructor(_x, _y, _velocidad){
+			super(_x, _y,);
+			this.velocidad = _velocidad;
+			this.cantidadDeContactosConDiscoCadaVezQueEntraASuCampo = 0;
 		}
 
-		this.mover = function(){
+		moverStickVisitante(){
 
 			if (puckComeCocos.y < LIMITEMEDIOCAMPO) {
-
+	
 				if(this.cantidadDeContactosConDiscoCadaVezQueEntraASuCampo < 2){
 					if ((puckComeCocos.x + puckComeCocos.radio()+6) < this.x) {
 						this.x -= this.velocidad;
@@ -511,23 +495,40 @@ window.onload = function() {
 				}else if(this.x < this.posicionInicalEnX){
 					this.x += this.velocidad;
 				}
-
+	
 				if(this.y > this.posicionInicalEnY){
 					this.y -= this.velocidad;
 				}else if(this.y < this.posicionInicalEnY){
 					this.y += this.velocidad;
 				}
-
+	
 			}
-
+	
 		}
 
-		this.show = function(){
+		mantenerStickVisitanteEnElCanvas(){
+			if(this.direccion != 0){
+				if(this.y < LIMITEARRIBA){
+					this.y = LIMITEARRIBA;
+				}
+				if(this.x < LIMITELADOIZQUIERDO){
+					this.x = LIMITELADOIZQUIERDO;
+				}
+				if(this.coordsParteAbajo() > LIMITEMEDIOCAMPO){
+					this.y = 227;
+				}
+				if(this.coordsLadoDerecho() > LIMITELADODERECHO){
+					this.x = 295;
+				}
+			}
+		}
+
+		showStickVisitante(){
 			ctx.drawImage
 					(
 						HOCKEYASSETS,
-						this.prototype.SKINCOORDS[0],
-						this.prototype.SKINCOORDS[1],
+						this.SKINCOORDS[0],
+						this.SKINCOORDS[1],
 						this.anchura,
 						this.altura,
 						this.x,
@@ -535,36 +536,78 @@ window.onload = function() {
 						this.anchura,
 						this.altura
 					);
-		}
 	}
-	StickVisitante.prototype = StickHockey;
+
+	}
+
 
 
 	//	MARCADORES
 
-	/**
-	 * Este objeto representa el 
-	 * marcador del equipo local
-	 * @param {number} _x 
-	 * @param {number} _y 
-	 */
-	function MarcadorLocal(_x, _y){
+	class MarcadorLocal extends Marcador {
 
-		this.base = Marcador;
-		this.base(_x,_y);
+		/**
+		 * Este objeto representa el 
+		 * marcador del equipo local
+		 * @param {number} _x 
+		 * @param {number} _y 
+		 */
+		constructor(_x, _y){
+			super(_x, _y);
+		}
 
-		this.anotarGolDelLocal = function(){
+		anotarGolDelLocal(){
 			this.goles += 1;
 		}
 
-		this.haGanadoElEquipoLocal = function(){
+		haGanadoElEquipoLocal(){
 			if(this.goles === CANTIDADGOLESPARAGANAR){
 				return true;
 			}
 			return false;
 		}
 
-		this.show = function(){
+		showMarcadorLocal(){
+			ctx.drawImage
+					(
+						HOCKEYASSETS,
+						this.NUMEROS[this.goles].SKINCOORDS[0],
+						this.NUMEROS[this.goles].SKINCOORDS[1],
+						this.anchura,
+						this.altura,
+						this.x,
+						this.y,
+						this.anchura,
+						this.altura
+					);
+	}	
+
+	}
+
+	class MarcadorVisitante extends Marcador {
+
+		/**
+		 * Este objeto representa el 
+		 * marcador del equipo visitante
+		 * @param {number} _x 
+		 * @param {number} _y 
+		 */
+		constructor(_x, _y){
+			super(_x, _y);
+		}
+
+		anotarGolDelVisitante(){
+			this.goles += 1;
+		}
+
+		haGanadoElEquipoVisitante(){
+			if(this.goles === CANTIDADGOLESPARAGANAR){
+				return true;
+			}
+			return false;
+		}
+
+		showMarcadorVisitante(){
 			ctx.drawImage
 					(
 						HOCKEYASSETS,
@@ -578,48 +621,8 @@ window.onload = function() {
 						this.altura
 					);
 		}
+
 	}
-	MarcadorLocal.prototype = new Marcador;
-
-	/**
-	 * Este objeto representa el 
-	 * marcador del equipo visitante
-	 * @param {number} _x 
-	 * @param {number} _y 
-	 */
-	function MarcadorVisitante(_x, _y){
-
-		this.base = Marcador;
-		this.base(_x,_y);
-
-		this.anotarGolDelVisitante = function(){
-			this.goles += 1;
-		}
-
-		this.haGanadoElEquipoVisitante = function(){
-			if(this.goles === CANTIDADGOLESPARAGANAR){
-				return true;
-			}
-			return false;
-		}
-
-		this.show = function(){
-			ctx.drawImage
-					(
-						HOCKEYASSETS,
-						this.NUMEROS[this.goles].SKINCOORDS[0],
-						this.NUMEROS[this.goles].SKINCOORDS[1],
-						this.anchura,
-						this.altura,
-						this.x,
-						this.y,
-						this.anchura,
-						this.altura
-					);
-		}
-	}
-	MarcadorVisitante.prototype = new Marcador;
-
 
 
 	function gameLoop() {
@@ -631,13 +634,13 @@ window.onload = function() {
 		ctx.drawImage(BACKGROUND,0,0,380,599,0,0,380,599);
 
 		puckComeCocos.mantenerPuckEnElCanvas();
-		puckComeCocos.mover();
+		puckComeCocos.moverPuck();
 
 		stickLocal.mantenerStickLocalEnElCanvas();
-		stickLocal.mover();
+		stickLocal.moverStickLocal();
 
 		stickVisitante.mantenerStickVisitanteEnElCanvas();
-		stickVisitante.mover();
+		stickVisitante.moverStickVisitante();
 
 		//	Comprobamos si el puck ha colisionado con el stick user
 		if(puckComeCocos.detectarColisionEntrePuckStick(stickLocal)){
@@ -674,12 +677,12 @@ window.onload = function() {
 			}
 		}
 
-		timer.show();
-		marcadorLocal.show();
-		marcadorVisitante.show();
-		puckComeCocos.show();
-		stickLocal.show();
-		stickVisitante.show();
+		timer.showTimer();
+		marcadorLocal.showMarcadorLocal();
+		marcadorVisitante.showMarcadorVisitante();
+		puckComeCocos.showPuck();
+		stickLocal.showStickLocal();
+		stickVisitante.showStickVisitante();
 	}
 	/**
 	 * Este método se encarga de iniciar el funcionamiento del juego
